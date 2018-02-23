@@ -13,7 +13,7 @@ class PersonnelManagement extends Controller
     {
 		$this->assign('department',$request->session('department'));
 		$this->assign('name',$request->session('name'));
-		$this->assign('position','');
+		$this->assign('position',$request->session('position'));
 		$this->assign('begintime','');
 		$this->assign('endtime','');
 		$this->assign('reason','');
