@@ -1,0 +1,34 @@
+{include file="index/head" /}
+<div class="row clearfix">
+<div class="col-lg-4 column">
+</div>
+<div class="col-lg-4 column">
+      <div class="panel panel-default" >
+    <div class="panel-heading">
+        <h2 class="panel-title text-center">登陆</h2>
+    </div>
+    <div class="panel-body">
+  <div class="form-group" id="loginformstate0">
+    <label for="name">账号</label>
+    <input type="text" class="form-control" id="loginforminput0" name="loginforminput0" maxlength="15" placeholder="请输入账号" >
+	<span id="loginformhelpBlock0" class="help-block pull-right" style="visibility:hidden">请输入账号！</span>
+  </div>
+  <div class="form-group" id="loginformstate1">
+	<label for="name">密码</label>
+    <input type="password" class="form-control" id="loginforminput1" name="loginforminput1" maxlength="15" placeholder="请输入密码" >
+	<span id="loginformhelpBlock1" class="help-block pull-right" style="visibility:hidden">请输入密码！</span>
+  </div>
+  <div class="form-group text-right" id="loginformbutton">
+    <button type="button" class="btn btn-primary" onclick="registerjs.login()">登录</button>
+	<a class="btn btn-default" href="{:url('index/index/register')}">注册</a>
+	
+  </div>
+    
+    </div>
+</div>
+</div>
+<div class="col-lg-4 column">
+</div>
+</div>
+
+{include file="index/foot" /}

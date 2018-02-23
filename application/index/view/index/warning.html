@@ -1,0 +1,25 @@
+{include file="index/head" /}
+<div class="row clearfix">
+<div class="col-lg-4 column">
+</div>
+<div class="col-lg-4 column">
+      <div class="panel panel-default" >
+    <div class="panel-heading">
+        <h1 class="panel-title">提示信息</h1>
+    </div>
+    <div class="panel-body">
+	<p>{$warningmsg}</p></br><p><span id="reciprocal">3</span>秒后跳转页面！</p>
+    </div>
+</div>
+</div>
+<div class="col-lg-4 column">
+</div>
+</div>
+
+<script>
+var i=3;
+window.setTimeout("window.location.href='{$url}';",3000);
+window.setInterval("i=i-1;$('#reciprocal').text(i);",1000);
+</script>
+
+{include file="index/foot" /}

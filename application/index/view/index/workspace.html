@@ -1,0 +1,46 @@
+{include file="index/head" /}
+<script language="JavaScript" src="/static/js/workspacefunction.js"></script>
+<div class="row clearfix">
+<div class="col-lg-3 column">
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">用户信息</h3>
+  </div>
+  <div class="panel-body">
+
+	<div style="margin:20px" class="text-center" style="width:100%">
+	<i class="icon-user icon-4x icon-border"></i>
+	</div>
+	<div>
+	<hr>
+	<p>工号：{$id}</p>
+    <p>姓名：{$name}</p>
+	<p>部门：{$department}</p>
+	<p>职位：{$position}</p>
+	<p>电话：{$cellphone}</p>
+	<hr>
+	</div>
+	<div class="text-center"><button type="button" class="btn btn-danger" onclick="registerjs.logout()">退出系统</button></div>
+  </div>
+</div>
+<div class="list-group">
+  <button id="personalbusiness" type="button" class="list-group-item leftmenu active" onclick="changemenu(this.id)">个人事项</button>
+  <button id="eateveryday" type="button" class="list-group-item leftmenu " onclick="changemenu(this.id)">每日报餐</button>
+  <button id="personnelmanagement" type="button" class="list-group-item leftmenu" onclick="changemenu(this.id)">人事管理</button>
+  <button id="publicadministration" type="button" class="list-group-item leftmenu" onclick="changemenu(this.id)">行政管理</button>
+  <button id="propagateneedmenu" type="button" class="list-group-item leftmenu" onclick="changemenu(this.id)">推广需求</button>
+  <button id="purchaseapplymenu" type="button" class="list-group-item leftmenu" onclick="changemenu(this.id)">采购申请</button>
+  <button id="salesrecordmenu" type="button" class="list-group-item leftmenu" onclick="changemenu(this.id)">销售记录</button>
+</div>
+
+</div>
+<div class="col-lg-9 column">
+	<div id="mainworkspace">
+	</div>
+</div>
+</div>
+
+<script>
+{$jsfunction}
+</script>
+{include file="index/foot" /}
