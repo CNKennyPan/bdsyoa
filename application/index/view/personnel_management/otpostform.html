@@ -1,23 +1,23 @@
 <div class="panel panel-default" >
-			<div class="panel-heading text-center"><h3>加班申请单</h3></div>
-			<div class="panel-body" style="padding:10px">
+	<div class="panel-heading text-center"><h3>加班申请单</h3></div>
+	<div class="panel-body" style="padding:10px">
 				<div class="row">
 					<div class="form-group col-lg-4">
 						<div class="input-group">
 							<span class="input-group-addon" id="basic-addon1">申&#8194请&#8194人</span>
-							<input type="text" class="form-control" id="otforminput0" placeholder="请输入申请人姓名" value="{$name}" aria-describedby="basic-addon1" readonly>
+							<input type="text" class="form-control" id="otforminput0" placeholder="请输入申请人姓名" value="{$name}" aria-describedby="basic-addon1" readonly="readonly" >
 						</div>
 					</div>
 					<div class="form-group col-lg-4">
 						<div class="input-group">
 							<span class="input-group-addon" id="basic-addon1">所属部门</span>
-							<input type="text" class="form-control" id="otforminput1" placeholder="请输入部门名称" value="{$department}" aria-describedby="basic-addon1" readonly>
+							<input type="text" class="form-control" id="otforminput1" placeholder="请输入部门名称" value="{$department}" aria-describedby="basic-addon1" readonly="readonly" >
 						</div>
 					</div>
 					<div class="form-group col-lg-4">
 						<div class="input-group">
 							<span class="input-group-addon" id="basic-addon1">职&#12288&#12288位</span>
-							<input type="text" class="form-control" id="otforminput2" placeholder="请输入申请人职位" value="{$position}" aria-describedby="basic-addon1" readonly>
+							<input type="text" class="form-control" id="otforminput2" placeholder="请输入申请人职位" value="{$position}" aria-describedby="basic-addon1" readonly="readonly" >
 						</div>
 					</div>
 				</div>
@@ -25,14 +25,14 @@
 					<div class="form-group col-lg-6">
 							<div class="input-group">
 							<span class="input-group-addon" id="basic-addon1">开始时间</span>
-							<input type="text" class="form-control " id="otforminput3" placeholder="请选择加班开始时间" aria-describedby="basic-addon1" value="{$begintime}"  readonly>
+							<input type="text" class="form-control " id="otforminput3" placeholder="请选择加班开始时间" aria-describedby="basic-addon1" value="{$begintime}"  readonly="readonly" >
 							<span class="input-group-addon"><span class="glyphicon glyphicon-calendar form_date" data-link-field="otforminput3" data-link-format="yyyy-mm-dd hh:ii"></span></span>
 						</div>
 					</div>
 					<div class="form-group col-lg-6">
 							<div class="input-group">
 							<span class="input-group-addon" id="basic-addon1">结束时间</span>
-							<input type="text" class="form-control " id="otforminput4" placeholder="请选择加班结束时间" aria-describedby="basic-addon1" value="{$endtime}" readonly>
+							<input type="text" class="form-control " id="otforminput4" placeholder="请选择加班结束时间" aria-describedby="basic-addon1" value="{$endtime}" readonly="readonly" >
 							<span class="input-group-addon"><span class="glyphicon glyphicon-calendar form_date" data-link-field="otforminput4" data-link-format="yyyy-mm-dd hh:ii"></span></span>
 						</div>
 					</div>
@@ -49,7 +49,7 @@
 					<div class="form-group col-lg-4">
 						<div class="input-group">
 							<span class="input-group-addon" id="basic-addon1">处理方式</span>
-							<input type="text" class="form-control" id="otforminput6" placeholder="请选择加班处理方式" value="{$dealwith}" aria-describedby="basic-addon1" readonly>
+							<input type="text" class="form-control" id="otforminput6" placeholder="请选择加班处理方式" value="{$dealwith}" aria-describedby="basic-addon1" readonly="readonly" >
 						</div>
 					</div>
 					<div class="form-group col-lg-4" style="margin-bottom:0px;padding-top:6px;">
@@ -78,8 +78,8 @@
 				<div class="row text-center">
 					<button type="submit" class="btn btn-primary " onclick="selectuser.showdepartmentlist('otpost')">提交申请</button>
 				</div>
-			</div>
-		</div>
+	</div>
+</div>
 		
 		
 <!-- 包括datetimepicker插件 -->

@@ -31,6 +31,7 @@ class PersonnelManagement extends Controller
 		$pb->receiverid = $request->param('receiverid');
 		$pb->content = $request->param('content');
 		$pb->step = $request->param('step')-1;
+		$pb->submitinfo = "";
 		
 		 if($pb->save()){
            return '提交成功';

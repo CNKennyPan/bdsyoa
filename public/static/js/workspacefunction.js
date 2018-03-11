@@ -24,7 +24,21 @@ function showpersonalbusiness(){
     {},
 	function(data,status){
 		$('#mainworkspace').html(data);
+		//注册审批按钮点击事件
+		$("#businessformsubmit").click(function(){
+			
+			$.post("/index/business_form/show",
+			{
+				businessid:this.value,
+				method:'submit'
+			},
+			function(data,status){
+				$("#smallmodal").after(data);
+				$('#FormModal').modal('show');
+			});
+		});
     });
+	
 }
 
 
@@ -212,7 +226,7 @@ function showeateveryday(){
 				ss= s;
 			}
 			
-			parseInt("10",   10);
+			parseInt("10",10);
 			var today = y+"年"+mo+"月"+d+"日"+"  "+h+":"+m+":"+ss;
 			return today;
 		}
@@ -295,7 +309,7 @@ function getformcontent(formname,number){
 		if($("#"+formname+"input"+i).val() == "" || $("#"+formname+"input"+i).val() == null){
 			test = false;
 		}else{
-			content[i] = content + $("#"+formname+"input"+i).val();
+			content[i] = $("#"+formname+"input"+i).val();
 		}
 	}
 	if(test == true){
@@ -305,3 +319,13 @@ function getformcontent(formname,number){
 	}
 	
 }
+
+function formreadonly(formname,number){
+	for(var i=0;i<=number;i++){
+		$("#"+formname+"input"+i).attr("readOnly","");
+	}
+	// for(var i=0;i<=number;i++){
+		// $("#"+formname+"input"+i).removeAttr("readOnly");
+	// }
+}
+

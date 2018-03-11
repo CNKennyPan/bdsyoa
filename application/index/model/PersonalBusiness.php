@@ -45,8 +45,7 @@ class PersonalBusiness extends Model
 				'<td>'.$value['posttime'].'</td>'.
 				'<td>'.$value['sumbittime'].'</td>'.
 				'<td>'.
-				'<button type="button" class="btn btn-primary btn-xs">审批</button>&#12288'.
-				'<button type="button" class="btn btn-danger btn-xs">退回</button>'.
+				'<button type="button" class="btn btn-primary btn-xs" value="'.$value['id'].'" id="businessformsubmit">审批</button>&#12288'.
 				'</td></tr>';
 			}
 		}else{
