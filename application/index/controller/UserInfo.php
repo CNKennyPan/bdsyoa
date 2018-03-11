@@ -62,12 +62,12 @@ class UserInfo
 	   }else{
 			$account = $request->param('account');
 			$id = Db::query('select id from bdsy_user_info where account = "'.$account.'"');
-			if($id == ' '){
-				return '此账号可以注册';
-			}else{
+			$userread = UserInfoModel::get($id[0]['id']);
+			if ($userread != null) {
 				return '已存在账号';
+			}else{
+				return '此账号可以注册';
 			}
-			
 	   }		
 	}
 	
@@ -83,7 +83,6 @@ class UserInfo
 	   $user->department = $request->param('department');
 	   $user->position = $request->param('position');
 	   $user->birthday = $request->param('birthday');
-	   $user->entrytime = $request->param('entrytime');
 	   
 	   if($user->save()){
 		   return '注册成功';
