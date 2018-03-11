@@ -4,7 +4,7 @@ namespace app\index\model;
 
 use think\Model;
 
-class EatEveryday extends Model
+class PersonalManagement extends Model
 {
     protected $connection = [
         // 数据库类型

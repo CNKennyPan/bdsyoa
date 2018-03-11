@@ -3,6 +3,8 @@
 namespace app\index\model;
 
 use think\Model;
+use think\Db;
+use app\index\controller\UserInfo as UserInfo;
 
 class PersonalBusiness extends Model
 {
@@ -28,4 +30,28 @@ class PersonalBusiness extends Model
         // 数据库表前缀
         'prefix'      => 'bdsy_',
     ];
+	
+	public function showbusiness($receiverid){
+		$userinfo = new UserInfo ;
+		$result = Db::query('select * from bdsy_personal_business where receiverid = "'.$receiverid.'"');
+		if (count($result)>0){
+			$myworklist='';
+			foreach ($result as $value){
+				//return dump($userinfo->getUserName($value['posterid']));
+				$myworklist = $myworklist.'<tr>'.
+				'<td>'.$value['type'].'</td>'.
+				'<td>'.$value['businessname'].'</td>'.
+				'<td>'.$userinfo->getUserName($value['posterid']).'</td>'.
+				'<td>'.$value['posttime'].'</td>'.
+				'<td>'.$value['sumbittime'].'</td>'.
+				'<td>'.
+				'<button type="button" class="btn btn-primary btn-xs">审批</button>&#12288'.
+				'<button type="button" class="btn btn-danger btn-xs">退回</button>'.
+				'</td></tr>';
+			}
+		}else{
+			$myworklist='<tr><td colspan="5">暂时未有业务！</td></tr>';
+		}
+		return $myworklist;
+	}
 }

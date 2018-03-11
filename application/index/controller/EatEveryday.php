@@ -119,7 +119,7 @@ class EatEveryday extends Controller
 			
 			
 		//当天报餐
-		$lastday = (date("d")-1)<10 ? "0".(date("d")-1) : date("d");
+		$lastday = (date("d")-1)<10 ? "0".(date("d")-1) : date("d")-1;
 		$lastdaytime = date("Y-m-").$lastday."-"."10"."-"."00"."-"."00";
 		$result = Db::query('select * from bdsy_eat_everyday where userid = "'.$request->session('id').'" AND ordertime > "'.$lastdaytime.'" AND ordertime < "'.date("Y-m-d-10-00-00").'"');
 		
@@ -250,7 +250,7 @@ class EatEveryday extends Controller
 	//获得提前报餐的情况
 	private function tomorrow()
 	{	
-		$tomorrow = (date("d")+1)<10 ? "0".(date("d")+1) : date("d");
+		$tomorrow = (date("d")+1)<10 ? "0".(date("d")+1) : date("d")+1;
 		$tomorrowday = date("Y-m-").$tomorrow;
 		$tomorrowtime = date("Y-m-").$tomorrow."-"."10"."-"."00"."-"."00";
 		$result = Db::query('select * from bdsy_eat_everyday where  ordertime > "'.date("Y-m-d-10-00-00").'" AND ordertime < "'.$tomorrowtime.'"');
@@ -261,7 +261,7 @@ class EatEveryday extends Controller
 	//获得当前报餐的情况
 	private function lastday()
 	{	
-		$lastday = (date("d")-1)<10 ? "0".(date("d")-1) : date("d");
+		$lastday = (date("d")-1)<10 ? "0".(date("d")-1) : date("d")-1;
 		$lastdaytime = date("Y-m-").$lastday."-"."10"."-"."00"."-"."00";
 		$result = Db::query('select * from bdsy_eat_everyday where ordertime > "'.$lastdaytime.'" AND ordertime < "'.date("Y-m-d-10-00-00").'"');
 		return $result;

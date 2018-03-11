@@ -11,6 +11,13 @@ class PersonnelManagement extends Controller
 {
     public function show(Request $request)
     {
+		$this->assign('name',$request->session('name'));
+		$this->assign('department',$request->session('department'));
+		$this->assign('position',$request->session('position'));
+		$this->assign('reason',"");
+		$this->assign('dealwith',"");
+		$this->assign('begintime',"");
+		$this->assign('endtime',"");
 		return $this->fetch();
 		
     }
@@ -23,6 +30,7 @@ class PersonnelManagement extends Controller
 		$pb->posterid = $request->session('id');
 		$pb->receiverid = $request->param('receiverid');
 		$pb->content = $request->param('content');
+		$pb->step = $request->param('step')-1;
 		
 		 if($pb->save()){
            return '提交成功';

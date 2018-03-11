@@ -4,7 +4,8 @@ namespace app\index\model;
 
 use think\Model;
 
-class EatEveryday extends Model
+
+class PersonalMessage extends Model
 {
     protected $connection = [
         // 数据库类型
@@ -29,4 +30,6 @@ class EatEveryday extends Model
         'prefix'      => 'bdsy_',
     ];
 	
+	
+
 }

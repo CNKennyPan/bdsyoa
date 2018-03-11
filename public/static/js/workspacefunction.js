@@ -137,12 +137,15 @@ var selectuser = {
 //提交加班申请
 function otpost(receiverid){
 	//alert(id);
+	var content = getformcontent("otform",6);
+	if(content != "false"){
 	$.post("/index/personnel_management/otpost",
     {
 		type:'人事管理',
 		businessname:'加班申请单',
 		receiverid:receiverid,
-		content:$('#otpostform').html()
+		content:content,
+		step:'5'
 	},
 	function(data,status){
 		if(data=='提交成功'){
@@ -153,8 +156,12 @@ function otpost(receiverid){
 		$("#smallmodal").modal('show');
 			$('#smallmodal').on('hidden.bs.modal', function (e) {
 				$("#smallmessage").html(""); 
+				showpersonnelmanagement();
 			});
 	});
+	}else{
+		alert("请检查表单是否填写完整！");
+	}
 }
 
 
@@ -281,3 +288,20 @@ function eatsignup(){
     });
 }
 
+function getformcontent(formname,number){
+	var content = new Array();
+	var test = true;
+	for(var i=0;i<=number;i++){
+		if($("#"+formname+"input"+i).val() == "" || $("#"+formname+"input"+i).val() == null){
+			test = false;
+		}else{
+			content[i] = content + $("#"+formname+"input"+i).val();
+		}
+	}
+	if(test == true){
+		return JSON.stringify(content);
+	}else{
+		return "false";
+	}
+	
+}
