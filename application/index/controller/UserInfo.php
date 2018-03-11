@@ -18,8 +18,9 @@ class UserInfo
 			$account = $request->param('account');
 			$password = $request->param('userpassword');
 			$id = Db::query('select id from bdsy_user_info where account = "'.$account.'"');
+			if($id != null && $id != ""){
 			$userread = UserInfoModel::get($id[0]['id']);
-			if ($userread != null) {
+			if ($userread != null && $userread != "") {
 				if($userread->password == $password){
 					Session::set('id',$userread->id);
 					Session::set('account',$userread->account);
@@ -36,6 +37,9 @@ class UserInfo
 			}else{
 				return '账号不存在';
 			}	
+			}else{
+				return '账号不存在';
+			}
 	   }
 	}
 	
