@@ -26,12 +26,10 @@ function showpersonalbusiness(){
 		$('#mainworkspace').html(data);
 		//注册审批按钮点击事件
 		$("#businessformsubmit").click(function(){
-			var str=this.value;
-			var post=str.split("@");
+
 			$.post("/index/business_form/show",
 			{
-				form:post[0],
-				businessid:post[1],
+				businessid:this.value,
 				method:'submit'
 			},
 			function(data,status){

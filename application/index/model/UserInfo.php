@@ -6,7 +6,7 @@ use think\Model;
 
 class UserInfo extends Model
 {
-    protected $connection = [
+	protected $connection = [
         // 数据库类型
         'type'        => 'mysql',
         // 数据库连接DSN配置
@@ -28,4 +28,5 @@ class UserInfo extends Model
         // 数据库表前缀
         'prefix'      => 'bdsy_',
     ];
+	
 }

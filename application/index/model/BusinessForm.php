@@ -5,7 +5,7 @@ namespace app\index\model;
 use think\Model;
 use think\Db;
 use think\Request; 
-
+use app\index\model\UserInfo as UserInfoModel;
 
 class BusinessForm extends Model
 {
@@ -19,12 +19,16 @@ class BusinessForm extends Model
 	var $sumbittime = "";
 	var $step = "";
 	var $submitinfo = "";
-	
+	var $formtype = "";
 	var $submit = "";
-	
 	var $footer = "";
 	
-	public function __construct($businessid){
+	public function __construct($businessid,$method,$submiterid){
+		
+		//获取审批人信息
+		$userread = UserInfoModel::get($submiterid);
+		
+		//获取事项信息
 		$result = Db::query('select * from bdsy_personal_business where id = "'.$businessid.'"');
 		if (count($result)>0){
 			
@@ -40,22 +44,32 @@ class BusinessForm extends Model
 			$this->submitinfo = $result[0]['submitinfo'];
 			$this->content = json_decode($this->content,true);
 		}
-	}
-	
-	public function getcontent(){
-		return $this->content;
-	}
-	
-	public function getsubmitinfo(){
-		return $this->submitinfo;
-	}
-	
-	
-	public function getsubmit($position){
-		//审批栏
-		$submiter = "";
 		
-		switch ($position)
+		//表格类型
+		switch($this->type)
+		{
+			case "加班申请单":
+				$this->formtype="otform";
+			break;
+			default:
+				$this->formtype="otform";
+		}
+		
+		//审批按钮
+		switch ($method)  //submit   //read   
+		{
+			case "read":
+				$this->footer = '<button type="button" class="btn btn-info" data-dismiss="modal">完成</button>';
+			break;
+			case "submit":
+				$this->footer = '<button type="button" class="btn btn-success" data-dismiss="modal">&#8194同意&#8194</button><button type="button" class="btn btn-warning" data-dismiss="modal">不同意</button>';
+			break;
+			default:
+				$this->footer = '<button type="button" class="btn btn-info" data-dismiss="modal">完成</button>';
+		}
+		
+		//获取审批栏
+		switch ($userread->position)
 		{
 			case "部门专员":
 				$submiter = '一般审批';
@@ -77,7 +91,8 @@ class BusinessForm extends Model
 		}
 		
 		$number = count($this->content)+1;
-		$submit = '<div class="row">
+		$this->submit = '
+				<div class="row">
 					<div class="form-group col-lg-12">
 						<div class="input-group">
 							<span class="input-group-addon" id="basic-addon1">'.$submiter.'</span>
@@ -86,24 +101,12 @@ class BusinessForm extends Model
 					</div>
 				</div>';
 				
-		return $submit;
-	}
-	
-	public function getfooter($type){  //submit   //read   
-		switch ($type)
-		{
-			case "nomal":
-				$footer = '<button type="button" class="btn btn-info" data-dismiss="modal">完成</button>';
-			break;
-			case "submit":
-				$footer = '<button type="button" class="btn btn-success" data-dismiss="modal">&#8194同意&#8194</button><button type="button" class="btn btn-warning" data-dismiss="modal">不同意</button>';
-			break;
-			default:
-				$footer = '<button type="button" class="btn btn-info" data-dismiss="modal">完成</button>';
-		}
-		return $footer;
 		
 	}
+	
+	
+
+	
 	
 	
 }
