@@ -26,10 +26,12 @@ function showpersonalbusiness(){
 		$('#mainworkspace').html(data);
 		//注册审批按钮点击事件
 		$("#businessformsubmit").click(function(){
-			
+			var str=this.value;
+			var post=str.split("@");
 			$.post("/index/business_form/show",
 			{
-				businessid:this.value,
+				form:post[0],
+				businessid:post[1],
 				method:'submit'
 			},
 			function(data,status){
@@ -301,6 +303,7 @@ function eatsignup(){
 		}
     });
 }
+
 
 function getformcontent(formname,number){
 	var content = new Array();

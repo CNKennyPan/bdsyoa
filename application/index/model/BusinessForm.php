@@ -28,17 +28,17 @@ class BusinessForm extends Model
 		$result = Db::query('select * from bdsy_personal_business where id = "'.$businessid.'"');
 		if (count($result)>0){
 			
-			$id = $result[0]['id'];
-			$type = $result[0]['type'];
-			$businessname = $result[0]['businessname'];
-			$receiverid = $result[0]['receiverid'];
-			$posterid = $result[0]['posterid'];
-			$content = $result[0]['content'];
-			$posttime = $result[0]['posttime'];
-			$sumbittime = $result[0]['sumbittime'];
-			$step = $result[0]['step'];
-			$submitinfo = $result[0]['submitinfo'];
-			$content = json_decode($content);
+			$this->id = $result[0]['id'];
+			$this->type = $result[0]['type'];
+			$this->businessname = $result[0]['businessname'];
+			$this->receiverid = $result[0]['receiverid'];
+			$this->posterid = $result[0]['posterid'];
+			$this->content = $result[0]['content'];
+			$this->posttime = $result[0]['posttime'];
+			$this->sumbittime = $result[0]['sumbittime'];
+			$this->step = $result[0]['step'];
+			$this->submitinfo = $result[0]['submitinfo'];
+			$this->content = json_decode($this->content,true);
 		}
 	}
 	
@@ -51,11 +51,11 @@ class BusinessForm extends Model
 	}
 	
 	
-	public function getsubmit(){
+	public function getsubmit($position){
 		//审批栏
 		$submiter = "";
 		
-		switch ($request->session('position'))
+		switch ($position)
 		{
 			case "部门专员":
 				$submiter = '一般审批';
@@ -76,14 +76,12 @@ class BusinessForm extends Model
 				$submiter = '一般审批';
 		}
 		
-		
-		$content = json_decode($content, true);
-		$number = count($content)+1;
+		$number = count($this->content)+1;
 		$submit = '<div class="row">
 					<div class="form-group col-lg-12">
 						<div class="input-group">
 							<span class="input-group-addon" id="basic-addon1">'.$submiter.'</span>
-							<input type="text" class="form-control" id="otforminput'.$number.'" placeholder="请输入审批意见" value="{$reason}" aria-describedby="basic-addon1">
+							<input type="text" class="form-control" id="otforminput'.$number.'" placeholder="请输入审批意见" value="" aria-describedby="basic-addon1">
 						</div>
 					</div>
 				</div>';
@@ -98,8 +96,7 @@ class BusinessForm extends Model
 				$footer = '<button type="button" class="btn btn-info" data-dismiss="modal">完成</button>';
 			break;
 			case "submit":
-				$footer = '<button type="button" class="btn btn-success" data-dismiss="modal">同意</button>';
-				$footer = '<button type="button" class="btn btn-danger" data-dismiss="modal">不同意</button>';
+				$footer = '<button type="button" class="btn btn-success" data-dismiss="modal">&#8194同意&#8194</button><button type="button" class="btn btn-warning" data-dismiss="modal">不同意</button>';
 			break;
 			default:
 				$footer = '<button type="button" class="btn btn-info" data-dismiss="modal">完成</button>';

@@ -15,23 +15,27 @@ class BusinessForm extends Controller
     {
 		$bfm = new BusinessFormModel($request->param('businessid'));
 		
-		$this->assign('body',$this->otform($request->param('businessid')));
+		
+		
+		switch($request->param('form'))
+		{
+			case "otform":
+				$this->otform($request->param('businessid'),$request->param('method'),$request->session('position'));
+				$this->assign('body','otform');
+			break;
+			default:
+				$this->otform($request->param('businessid'),$request->param('method'),$request->session('position'));
+		}
 		
 		switch($request->param('method'))
 		{
 			case "read":
-				$this->assign('submitinfo',$bfm::submitinfo);
-				$this->assign('submit','');
 				$this->assign('footer',$bfm->getfooter('read'));
 			break;
 			case "submit":
-				$this->assign('submitinfo',$bfm->getsubmitinfo());
-				$this->assign('submit',$bfm->getsubmit());
 				$this->assign('footer',$bfm->getfooter('submit'));
 			break;
 			default:
-				$this->assign('submitinfo',$bfm->getsubmitinfo());
-				$this->assign('submit','');
 				$this->assign('footer',$bfm->getfooter('read'));
 		}
 		
@@ -39,22 +43,35 @@ class BusinessForm extends Controller
 		
     }
 	
-	//2018年3月12日待解决问题。Invalid argument supplied for foreach()
-	// private function otform($businessid)
-    // {
-		// $bfm = new BusinessFormModel($businessid);
-		// $content = $bfm->getcontent();
+	//private
+	public function otform($businessid,$method,$position)
+    {
+		$bfm = new BusinessFormModel($businessid);
+		$content = $bfm->getcontent();
 		
-		// $i = 0;
+		$i = 0;
+		foreach($content as $value){
+			$this->assign("input".$i,$value);
+			$i = $i + 1 ;
+		}
 		
-		// foreach($content as $value){
-			// $this->assign($i,$value);
-			// $i = $i + 1 ;
-		// }
-
-		// return $this->display();
+		switch($method)
+		{
+			case "read":
+				$this->assign('submitinfo',$bfm->submitinfo);
+				$this->assign('submit','');
+			break;
+			case "submit":
+				$this->assign('submitinfo',$bfm->getsubmitinfo());
+				$this->assign('submit',$bfm->getsubmit($position));
+			break;
+			default:
+				$this->assign('submitinfo',$bfm->getsubmitinfo());
+				$this->assign('submit','');
+		}
+	    
 		
-    // }
+    }
 	
 	
 	
