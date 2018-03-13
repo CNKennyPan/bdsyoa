@@ -34,7 +34,25 @@ function showpersonalbusiness(){
 			},
 			function(data,status){
 				$("#smallmodal").after(data);
+				$(".businessformsubmit").click(function{
+					var businessid=this.value.substr(1);
+					var usersubmit=this.value.substr(0,1);
+					$.post("/index/business_form/update",
+					{
+						businessid:businessid,
+						content:$("#businessformsubmitcontent").val(),
+						result:usersubmit
+					},
+					function(data,status){
+						//开发到这里，还未处理模态框消失的关系。
+					});
+				});
 				$('#FormModal').modal('show');
+				$('#FormModal').on('hidden.bs.modal', function (e) {
+					$('#FormModal').remove();
+					
+				});
+				$('#FormModal').off().on( 'hidden', 'hidden.bs.modal');  
 			});
 		});
     });

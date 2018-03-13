@@ -23,7 +23,7 @@ login:function(){
 		userpassword:$("#loginforminput1").val()
     },
 	function(data,status){
-		alert(data);
+		//alert(data);
 		if(data=="登录成功"){
 			$("#smallmessage").text("登录成功!点击下方确认跳转到工作界面！");
 			$("#smallmodal").modal('show');

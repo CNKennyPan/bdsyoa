@@ -5,7 +5,7 @@ namespace app\index\model;
 use think\Model;
 use think\Db;
 use think\Request; 
-use app\index\model\UserInfo as UserInfoModel;
+
 
 class BusinessForm extends Model
 {
@@ -26,7 +26,7 @@ class BusinessForm extends Model
 	public function __construct($businessid,$method,$submiterid){
 		
 		//获取审批人信息
-		$userread = UserInfoModel::get($submiterid);
+		$userread = Db::query('select * from bdsy_user_info where id = "'.$submiterid.'"');
 		
 		//获取事项信息
 		$result = Db::query('select * from bdsy_personal_business where id = "'.$businessid.'"');
@@ -46,13 +46,13 @@ class BusinessForm extends Model
 		}
 		
 		//表格类型
-		switch($this->type)
+		switch($this->businessname)
 		{
 			case "加班申请单":
-				$this->formtype="otform";
+				$this->formtype="business_form/otform";
 			break;
 			default:
-				$this->formtype="otform";
+				$this->formtype="business_form/otform";
 		}
 		
 		//审批按钮
@@ -62,14 +62,14 @@ class BusinessForm extends Model
 				$this->footer = '<button type="button" class="btn btn-info" data-dismiss="modal">完成</button>';
 			break;
 			case "submit":
-				$this->footer = '<button type="button" class="btn btn-success" data-dismiss="modal">&#8194同意&#8194</button><button type="button" class="btn btn-warning" data-dismiss="modal">不同意</button>';
+				$this->footer = '<button type="button" class="btn btn-success businessformsubmit" data-dismiss="modal" value="1'.$businessid.'" >&#8194同意&#8194</button><button type="button" class="btn btn-warning businessformsubmit" data-dismiss="modal" value="0'.$businessid.'">不同意</button>';
 			break;
 			default:
 				$this->footer = '<button type="button" class="btn btn-info" data-dismiss="modal">完成</button>';
 		}
 		
 		//获取审批栏
-		switch ($userread->position)
+		switch ($userread[0]['position'])
 		{
 			case "部门专员":
 				$submiter = '一般审批';
@@ -90,13 +90,14 @@ class BusinessForm extends Model
 				$submiter = '一般审批';
 		}
 		
+		
 		$number = count($this->content)+1;
 		$this->submit = '
 				<div class="row">
 					<div class="form-group col-lg-12">
 						<div class="input-group">
-							<span class="input-group-addon" id="basic-addon1">'.$submiter.'</span>
-							<input type="text" class="form-control" id="otforminput'.$number.'" placeholder="请输入审批意见" value="" aria-describedby="basic-addon1">
+							<span class="input-group-addon" id="basic-addon1">'.$userread[0]['position'].$userread[0]['name'].'审批意见</span>
+							<input type="text" class="form-control" id="businessformsubmitcontent" placeholder="请输入审批意见" value="" aria-describedby="basic-addon1">
 						</div>
 					</div>
 				</div>';
@@ -104,6 +105,12 @@ class BusinessForm extends Model
 		
 	}
 	
+	
+	// <div class="form-group has-success has-feedback">
+							// <label class="control-label" for="otforminput'.$number.'">'.$userread[0]['position'].'&#12288'.$userread[0]['name'].'&#12288审批</label>
+							// <input type="text" class="form-control" id="otforminput'.$number.'" readonly>
+							// <span class="glyphicon glyphicon-ok form-control-feedback"></span>
+						// </div>
 	
 
 	
