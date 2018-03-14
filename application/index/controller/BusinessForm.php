@@ -6,6 +6,7 @@ use think\Session;
 use think\Request; 
 use think\Db;
 use app\index\model\BusinessForm as BusinessFormModel;
+use app\index\model\PersonalBusiness as PersonalBusinessModel;
 
 
 //主函数
@@ -48,7 +49,25 @@ class BusinessForm extends Controller
 		
     }
 	
+
+
+	
 	 public function update(Request $request){
+		
+		$pb = PersonalBusinessModel::get($request->param('businessid'));
+		
+		//添加审批信息
+		$submitinfotemp = json_decode($pb->submitinfo,true);
+		$submitinfotemp[$request->session('id')] = $request->param('result').$request->param('content');
+		$pb->submitinfo = $submitinfotemp;
+		$pb->receiverid = $request->param('receiverid');
+		$pb->step = $request->param('step')-1;
+		
+		 if($pb->save()){
+           return '事项审批成功';
+       }else{
+           return '事项审批成功'.$pb->getError();
+       }
 		 
 	 }
 	

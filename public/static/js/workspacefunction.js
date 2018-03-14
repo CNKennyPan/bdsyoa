@@ -25,7 +25,7 @@ function showpersonalbusiness(){
 	function(data,status){
 		$('#mainworkspace').html(data);
 		//注册审批按钮点击事件
-		$("#businessformsubmit").click(function(){
+		$('.businessshowsubmit').click(function(){
 
 			$.post("/index/business_form/show",
 			{
@@ -33,30 +33,56 @@ function showpersonalbusiness(){
 				method:'submit'
 			},
 			function(data,status){
+				
 				$("#smallmodal").after(data);
-				$(".businessformsubmit").click(function{
-					var businessid=this.value.substr(1);
-					var usersubmit=this.value.substr(0,1);
-					$.post("/index/business_form/update",
-					{
-						businessid:businessid,
-						content:$("#businessformsubmitcontent").val(),
-						result:usersubmit
-					},
-					function(data,status){
-						//开发到这里，还未处理模态框消失的关系。
+				$(".businessformsubmit").click(function(){
+					$('#FormModal').on('hidden.bs.modal',{value:this.value},function (e) {
+							var businessid=e.data.value.substr(1);
+							var usersubmit=e.data.value.substr(0,1);
+							var content = $("#businessformsubmitcontent").val();
+							businessformsubmitupdate(businessid,usersubmit,content);
+							$('#FormModal').remove();
+							$('#FormModal').off().on( 'hidden', 'hidden.bs.modal');  
 					});
+					$('#FormModal').modal('hide');
 				});
 				$('#FormModal').modal('show');
 				$('#FormModal').on('hidden.bs.modal', function (e) {
 					$('#FormModal').remove();
-					
+					$('#FormModal').off().on( 'hidden', 'hidden.bs.modal');  
+				   
 				});
-				$('#FormModal').off().on( 'hidden', 'hidden.bs.modal');  
+				
 			});
 		});
     });
 	
+}
+
+function businessformsubmitupdate(businessid,usersubmit,content){
+	//alert(id);
+	var receiverid = selectuser.showdepartmentlist();
+	alert(receiverid);
+	$.post("/index/business_form/update",
+    {
+		businessid:businessid,
+		content:content,
+		result:usersubmit,
+		receiverid:receiverid
+	},
+	function(data,status){
+		if(data=='事项审批成功'){
+			$("#smallmessage").html("<p>事项审批成功！</p>");
+		}else{
+			$("#smallmessage").html("<p>事项审批失败！请重试！</p>");
+		}
+		$("#smallmodal").modal('show');
+		$('#smallmodal').on('hidden.bs.modal', function (e) {
+			$("#smallmessage").html(""); 
+			showpersonnelmanagement();
+		});
+	});
+
 }
 
 
@@ -85,32 +111,38 @@ var selectuser = {
 	postsumbit:0,
     postmethodname:'',
 	postval:'',
-	showdepartmentlist:function(postmethodname){
-		selectuser.postmethodname = postmethodname
+	userid:'',
+	date,
+	showdepartmentlist:function(postmethodname,date){
+		var postmethodname = arguments[0] ? arguments[0] : null;//设置参数的默认值为null
+		var date = arguments[1] ? arguments[1] : null;//设置参数的默认值为null
+		selectuser.postmethodname = postmethodname;
 		$.post("/index/user_info/departmentList",
-    {},
-	function(data,status){
-		var ul = JSON.parse(data);
-		//$("#mainworkspace").html(data)
-		var uls = '<select class="form-control" id="smallselectdepartment" onchange="selectuser.showuserlist(this.value)"><option>请选择部门</option>';
-		var ulv = '';
-		for (l in ul) 
-		{	
-		uls = uls + '<option>' + ul[l].department + '</option>'; 
-		}
-		uls = uls + '</select>';
-		$("#smallmessage").html("<p>请选择部门！</p><p>"+uls+"</p>");
-		$('#myModalLabel').text('请选择下一步接收人');
-		$("#myModalfooter").html('<a type="button" id="smallmodalcencel" class="btn btn-default" data-dismiss="modal" >取消</a>');
-		$("#smallmodal").modal('show');
-		$('#smallmodal').on('hidden.bs.modal', function (e) {
+		{},
+		function(data,status){
+			var ul = JSON.parse(data);
+			//$("#mainworkspace").html(data)
+			var uls = '<select class="form-control" id="smallselectdepartment" onchange="selectuser.showuserlist(this.value)"><option>请选择部门</option>';
+			var ulv = '';
+			for (l in ul) 
+			{	
+				uls = uls + '<option>' + ul[l].department + '</option>'; 
+			}
+			uls = uls + '</select>';
+			$("#smallmessage").html("<p>请选择部门！</p><p>"+uls+"</p>");
+			$('#myModalLabel').text('请选择下一步接收人');
+			$("#myModalfooter").html('<a type="button" id="smallmodalcencel" class="btn btn-default" data-dismiss="modal" >取消</a>');
+			$("#smallmodal").modal('show');
+			$('#smallmodal').on('hidden.bs.modal', function (e) {
 			if(selectuser.postsumbit==0){
 				$("#myModalfooter").html('<a type="button" id="smallmodalsubmit" class="btn btn-primary" data-dismiss="modal">确认</a>');
-			$("#smallmessage").html(""); 
-			$('#myModalLabel').text('系统消息');
+				$("#smallmessage").html(""); 
+				$('#myModalLabel').text('系统消息');
+				selectuser.userid = 'null';
+				return selectuser.userid;
 			//alert('第一步');
 			}
-		});
+			});
 		});
 	},
 	
@@ -150,7 +182,12 @@ var selectuser = {
 			if(selectuser.postsumbit==1){
 				//alert(selectuser.postval);
 				var receiverid = selectuser.postval.substring((selectuser.postval.indexOf('（')+1),selectuser.postval.lastIndexOf('）'));
-				targetfunction(selectuser.postmethodname,receiverid);
+				if(selectuser.postmethodname == null){
+					selectuser.userid = receiverid;
+					return selectuser.userid;
+				}else{
+					targetfunction(selectuser.postmethodname,receiverid);
+				}
 				selectuser.postsumbit=0;
 				selectuser.postmethodname='';
 				selectuser.postval='';
@@ -186,10 +223,10 @@ function otpost(receiverid){
 			$("#smallmessage").html("<p>提交失败！请重试！</p>");
 		}
 		$("#smallmodal").modal('show');
-			$('#smallmodal').on('hidden.bs.modal', function (e) {
-				$("#smallmessage").html(""); 
-				showpersonnelmanagement();
-			});
+		$('#smallmodal').on('hidden.bs.modal', function (e) {
+			$("#smallmessage").html(""); 
+			showpersonnelmanagement();
+		});
 	});
 	}else{
 		alert("请检查表单是否填写完整！");
@@ -320,7 +357,7 @@ function eatsignup(){
     });
 }
 
-
+//获取表格内容
 function getformcontent(formname,number){
 	var content = new Array();
 	var test = true;
@@ -339,6 +376,7 @@ function getformcontent(formname,number){
 	
 }
 
+//表格只读
 function formreadonly(formname,number){
 	for(var i=0;i<=number;i++){
 		$("#"+formname+"input"+i).attr("readOnly","");

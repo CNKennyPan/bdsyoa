@@ -26,7 +26,7 @@ class BusinessForm extends Model
 	public function __construct($businessid,$method,$submiterid){
 		
 		//获取审批人信息
-		$userread = Db::query('select * from bdsy_user_info where id = "'.$submiterid.'"');
+		$userread = Db::query('select name,position from bdsy_user_info where id = "'.$submiterid.'"');
 		
 		//获取事项信息
 		$result = Db::query('select * from bdsy_personal_business where id = "'.$businessid.'"');
@@ -41,7 +41,7 @@ class BusinessForm extends Model
 			$this->posttime = $result[0]['posttime'];
 			$this->sumbittime = $result[0]['sumbittime'];
 			$this->step = $result[0]['step'];
-			$this->submitinfo = $result[0]['submitinfo'];
+			$this->submitinfo = json_decode($result[0]['submitinfo'],true);
 			$this->content = json_decode($this->content,true);
 		}
 		
@@ -62,11 +62,39 @@ class BusinessForm extends Model
 				$this->footer = '<button type="button" class="btn btn-info" data-dismiss="modal">完成</button>';
 			break;
 			case "submit":
-				$this->footer = '<button type="button" class="btn btn-success businessformsubmit" data-dismiss="modal" value="1'.$businessid.'" >&#8194同意&#8194</button><button type="button" class="btn btn-warning businessformsubmit" data-dismiss="modal" value="0'.$businessid.'">不同意</button>';
+				$this->footer = '<button type="button" class="btn btn-success businessformsubmit" value="1'.$businessid.'" >&#8194同意&#8194</button><button type="button" class="btn btn-warning businessformsubmit" value="0'.$businessid.'">不同意</button>';
 			break;
 			default:
 				$this->footer = '<button type="button" class="btn btn-info" data-dismiss="modal">完成</button>';
 		}
+		
+		//获取历史审批信息
+		$k = array_keys($this->submitinfo);
+		$i = 0;
+		foreach ($k as $value){
+			//获取审批人姓名职位
+			$olduserread[$i] = Db::query('select name,position from bdsy_user_info where id = "'.$value.'"');
+			$i = ++$i;
+		}
+		$n = 0;
+		foreach ($this->submitinfo as $value){
+            $submit = substr($value,0,1);
+			$content = substr($value,1);
+			$feedback = $submit==1 ? 'ok' : 'remove';
+			$this->submitinfo = "";
+			$this->submitinfo = $this->submitinfo.'
+				<div class="row">
+					<div class="form-group col-lg-12 has-feedback">
+						<div class="input-group">
+							<span class="input-group-addon" id="basic-addon1">'.$olduserread[$n][0]['position'].$olduserread[$n][0]['name'].'：</span>
+							<input type="text" class="form-control" id="businessformsubmitcontent" placeholder="未有具体意见" value="'.$content.'" aria-describedby="basic-addon1" readonly>
+							<span class="glyphicon glyphicon-'.$feedback.' form-control-feedback"></span>
+						</div>
+					</div>
+				</div>';
+			$n = ++$n;
+		}
+
 		
 		//获取审批栏
 		switch ($userread[0]['position'])
@@ -96,7 +124,7 @@ class BusinessForm extends Model
 				<div class="row">
 					<div class="form-group col-lg-12">
 						<div class="input-group">
-							<span class="input-group-addon" id="basic-addon1">'.$userread[0]['position'].$userread[0]['name'].'审批意见</span>
+							<span class="input-group-addon" id="basic-addon1">'.$userread[0]['position'].$userread[0]['name'].'：</span>
 							<input type="text" class="form-control" id="businessformsubmitcontent" placeholder="请输入审批意见" value="" aria-describedby="basic-addon1">
 						</div>
 					</div>
