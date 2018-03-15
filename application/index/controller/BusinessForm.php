@@ -56,18 +56,26 @@ class BusinessForm extends Controller
 		
 		$pb = PersonalBusinessModel::get($request->param('businessid'));
 		
+		
 		//添加审批信息
 		$submitinfotemp = json_decode($pb->submitinfo,true);
-		$submitinfotemp[$request->session('id')] = $request->param('result').$request->param('content');
-		$pb->submitinfo = $submitinfotemp;
+		
+		$submitinfotemp[] = array(
+			'submiterid' => $request->session('id'),
+			'submit' => $request->param('result'),
+			'content' => $request->param('content'),
+			'step' => $pb->step,
+			'time' => date("Y-m-d-H-i-s")
+		);
+		$pb->submitinfo = json_encode($submitinfotemp,JSON_UNESCAPED_UNICODE);
 		$pb->receiverid = $request->param('receiverid');
-		$pb->step = $request->param('step')-1;
+		$pb->step = $pb->step-1;
 		
 		 if($pb->save()){
-           return '事项审批成功';
-       }else{
-           return '事项审批成功'.$pb->getError();
-       }
+			return '事项审批成功';
+			}else{
+			return '事项审批成功'.$pb->getError();
+			}
 		 
 	 }
 	

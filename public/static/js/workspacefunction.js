@@ -36,11 +36,12 @@ function showpersonalbusiness(){
 				
 				$("#smallmodal").after(data);
 				$(".businessformsubmit").click(function(){
-					$('#FormModal').on('hidden.bs.modal',{value:this.value},function (e) {
-							var businessid=e.data.value.substr(1);
-							var usersubmit=e.data.value.substr(0,1);
-							var content = $("#businessformsubmitcontent").val();
-							businessformsubmitupdate(businessid,usersubmit,content);
+					businessformsubmit.businessid=this.value.substr(1);
+					businessformsubmit.usersubmit=this.value.substr(0,1);
+					businessformsubmit.content= $("#businessformsubmitcontent").val();
+							alert($("#businessformsubmitcontent").val());
+					$('#FormModal').on('hidden.bs.modal',function (e) {
+							selectuser.showdepartmentlist('businessformsubmit.update');
 							$('#FormModal').remove();
 							$('#FormModal').off().on( 'hidden', 'hidden.bs.modal');  
 					});
@@ -59,31 +60,37 @@ function showpersonalbusiness(){
 	
 }
 
-function businessformsubmitupdate(businessid,usersubmit,content){
-	//alert(id);
-	var receiverid = selectuser.showdepartmentlist();
-	alert(receiverid);
-	$.post("/index/business_form/update",
-    {
-		businessid:businessid,
-		content:content,
-		result:usersubmit,
-		receiverid:receiverid
-	},
-	function(data,status){
-		if(data=='事项审批成功'){
-			$("#smallmessage").html("<p>事项审批成功！</p>");
-		}else{
-			$("#smallmessage").html("<p>事项审批失败！请重试！</p>");
-		}
-		$("#smallmodal").modal('show');
-		$('#smallmodal').on('hidden.bs.modal', function (e) {
-			$("#smallmessage").html(""); 
-			showpersonnelmanagement();
-		});
+var businessformsubmit = {
+	businessid:"",
+	usersubmit:"",
+	content:"",
+	update:function(receiverid){
+		alert(businessformsubmit.businessid+'@'+businessformsubmit.content+'@'+businessformsubmit.usersubmit+'@'+receiverid);
+		$.post("/index/business_form/update",
+		{
+			businessid:businessformsubmit.businessid,
+			content:businessformsubmit.content,
+			result:businessformsubmit.usersubmit,
+			receiverid:receiverid
+		},
+		function(data,status){
+			if(data=='事项审批成功'){
+				$("#smallmessage").html("<p>事项审批成功！</p>");
+			}else{
+				$("#smallmessage").html("<p>事项审批失败！请重试！</p>"+data);
+			}
+			$("#smallmodal").modal('show');
+			$('#smallmodal').on('hidden.bs.modal', function (e) {
+				$("#smallmessage").html(""); 
+				showpersonalbusiness();
+			});
 	});
-
+		
+	}
+	
 }
+
+
 
 
 //显示人资管理系统
@@ -112,10 +119,8 @@ var selectuser = {
     postmethodname:'',
 	postval:'',
 	userid:'',
-	date,
-	showdepartmentlist:function(postmethodname,date){
-		var postmethodname = arguments[0] ? arguments[0] : null;//设置参数的默认值为null
-		var date = arguments[1] ? arguments[1] : null;//设置参数的默认值为null
+	date:'',
+	showdepartmentlist:function(postmethodname){
 		selectuser.postmethodname = postmethodname;
 		$.post("/index/user_info/departmentList",
 		{},
@@ -138,8 +143,6 @@ var selectuser = {
 				$("#myModalfooter").html('<a type="button" id="smallmodalsubmit" class="btn btn-primary" data-dismiss="modal">确认</a>');
 				$("#smallmessage").html(""); 
 				$('#myModalLabel').text('系统消息');
-				selectuser.userid = 'null';
-				return selectuser.userid;
 			//alert('第一步');
 			}
 			});
@@ -181,13 +184,9 @@ var selectuser = {
 			$('#myModalLabel').text('系统消息');
 			if(selectuser.postsumbit==1){
 				//alert(selectuser.postval);
-				var receiverid = selectuser.postval.substring((selectuser.postval.indexOf('（')+1),selectuser.postval.lastIndexOf('）'));
-				if(selectuser.postmethodname == null){
-					selectuser.userid = receiverid;
-					return selectuser.userid;
-				}else{
-					targetfunction(selectuser.postmethodname,receiverid);
-				}
+				selectuser.userid= selectuser.postval.substring((selectuser.postval.indexOf('（')+1),selectuser.postval.lastIndexOf('）'));
+				alert(selectuser.userid+"@"+selectuser.postval)
+				targetfunction(selectuser.postmethodname,selectuser.userid);
 				selectuser.postsumbit=0;
 				selectuser.postmethodname='';
 				selectuser.postval='';

@@ -30,8 +30,15 @@ class PersonnelManagement extends Controller
 		$pb->posterid = $request->session('id');
 		$pb->receiverid = $request->param('receiverid');
 		$pb->content = $request->param('content');
+		$pb->submitinfo = json_encode(array(
+			array('submiterid' => $request->session('id'),
+			      'submit' => 1,
+				  'content' => '提交申请',
+				  'step' => $request->param('step'),
+				  'time' => date("Y-m-d-H-i-s"))
+		),JSON_UNESCAPED_UNICODE);
 		$pb->step = $request->param('step')-1;
-		$pb->submitinfo = json_encode(array($request->session('id')=>'1提交申请！'),JSON_UNESCAPED_UNICODE);
+		
 		
 		 if($pb->save()){
            return '提交成功';

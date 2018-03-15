@@ -19,6 +19,7 @@ class BusinessForm extends Model
 	var $sumbittime = "";
 	var $step = "";
 	var $submitinfo = "";
+	var $submitinfotemp = "";
 	var $formtype = "";
 	var $submit = "";
 	var $footer = "";
@@ -41,7 +42,7 @@ class BusinessForm extends Model
 			$this->posttime = $result[0]['posttime'];
 			$this->sumbittime = $result[0]['sumbittime'];
 			$this->step = $result[0]['step'];
-			$this->submitinfo = json_decode($result[0]['submitinfo'],true);
+			$this->submitinfotemp = json_decode($result[0]['submitinfo'],true);
 			$this->content = json_decode($this->content,true);
 		}
 		
@@ -68,31 +69,21 @@ class BusinessForm extends Model
 				$this->footer = '<button type="button" class="btn btn-info" data-dismiss="modal">完成</button>';
 		}
 		
-		//获取历史审批信息
-		$k = array_keys($this->submitinfo);
-		$i = 0;
-		foreach ($k as $value){
-			//获取审批人姓名职位
-			$olduserread[$i] = Db::query('select name,position from bdsy_user_info where id = "'.$value.'"');
-			$i = ++$i;
-		}
-		$n = 0;
-		foreach ($this->submitinfo as $value){
-            $submit = substr($value,0,1);
-			$content = substr($value,1);
-			$feedback = $submit==1 ? 'ok' : 'remove';
-			$this->submitinfo = "";
+		
+		foreach($this->submitinfotemp as $n){
+			$feedback = $n['submit']==1 ? 'ok' : 'remove';
+			$olduserread = Db::query('select name,position from bdsy_user_info where id = "'.$n['submiterid'].'"');
 			$this->submitinfo = $this->submitinfo.'
 				<div class="row">
 					<div class="form-group col-lg-12 has-feedback">
+						<span class="label label-default">'.$n['time'].'</span>
 						<div class="input-group">
-							<span class="input-group-addon" id="basic-addon1">'.$olduserread[$n][0]['position'].$olduserread[$n][0]['name'].'：</span>
-							<input type="text" class="form-control" id="businessformsubmitcontent" placeholder="未有具体意见" value="'.$content.'" aria-describedby="basic-addon1" readonly>
+							<span class="input-group-addon" id="basic-addon1">'.$olduserread[0]['position'].$olduserread[0]['name'].'：</span>
+							<input type="text" class="form-control" placeholder="未有具体意见" value="'.$n['content'].'" aria-describedby="basic-addon1" readonly>
 							<span class="glyphicon glyphicon-'.$feedback.' form-control-feedback"></span>
 						</div>
 					</div>
 				</div>';
-			$n = ++$n;
 		}
 
 		
