@@ -35,7 +35,7 @@ class PersonnelManagement extends Controller
 			      'submit' => 1,
 				  'content' => '提交申请',
 				  'step' => $request->param('step'),
-				  'time' => date("Y-m-d-H-i-s"))
+				  'time' => date("Y-m-d H:i:s"))
 		),JSON_UNESCAPED_UNICODE);
 		$pb->step = $request->param('step')-1;
 		

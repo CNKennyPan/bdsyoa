@@ -65,7 +65,7 @@ class BusinessForm extends Controller
 			'submit' => $request->param('result'),
 			'content' => $request->param('content'),
 			'step' => $pb->step,
-			'time' => date("Y-m-d-H-i-s")
+			'time' => date("Y-m-d H:i:s")
 		);
 		$pb->submitinfo = json_encode($submitinfotemp,JSON_UNESCAPED_UNICODE);
 		$pb->receiverid = $request->param('receiverid');

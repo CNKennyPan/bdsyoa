@@ -114,6 +114,7 @@ class BusinessForm extends Model
 		$this->submit = '
 				<div class="row">
 					<div class="form-group col-lg-12">
+						<span class="label label-primary">请输入审批意见</span>
 						<div class="input-group">
 							<span class="input-group-addon" id="basic-addon1">'.$userread[0]['position'].$userread[0]['name'].'：</span>
 							<input type="text" class="form-control" id="businessformsubmitcontent" placeholder="请输入审批意见" value="" aria-describedby="basic-addon1">

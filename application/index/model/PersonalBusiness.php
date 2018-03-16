@@ -33,7 +33,7 @@ class PersonalBusiness extends Model
 	
 	public function showbusiness($receiverid){
 		$userinfo = new UserInfo ;
-		$result = Db::query('select * from bdsy_personal_business where receiverid = "'.$receiverid.'"');
+		$result = Db::query('select bdsy_personal_business.*,bdsy_user_info.name from bdsy_personal_business,bdsy_user_info where bdsy_personal_business.receiverid = "'.$receiverid.'" and bdsy_personal_business.receiverid=bdsy_user_info.id');
 		if (count($result)>0){
 			$myworklist='';
 			foreach ($result as $value){
@@ -41,7 +41,7 @@ class PersonalBusiness extends Model
 				$myworklist = $myworklist.'<tr>'.
 				'<td>'.$value['type'].'</td>'.
 				'<td>'.$value['businessname'].'</td>'.
-				'<td>'.$userinfo->getUserName($value['posterid']).'</td>'.
+				'<td>'.$value['name'].'</td>'.
 				'<td>'.$value['posttime'].'</td>'.
 				'<td>'.$value['sumbittime'].'</td>'.
 				'<td>'.

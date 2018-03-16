@@ -83,6 +83,7 @@ var businessformsubmit = {
 			$('#smallmodal').on('hidden.bs.modal', function (e) {
 				$("#smallmessage").html(""); 
 				showpersonalbusiness();
+				$('#smallmodal').off().on( 'hidden', 'hidden.bs.modal'); 
 			});
 	});
 		
@@ -140,6 +141,7 @@ var selectuser = {
 			$("#smallmodal").modal('show');
 			$('#smallmodal').on('hidden.bs.modal', function (e) {
 			if(selectuser.postsumbit==0){
+				alert("1"+$('#smallselectuser').val());
 				$("#myModalfooter").html('<a type="button" id="smallmodalsubmit" class="btn btn-primary" data-dismiss="modal">确认</a>');
 				$("#smallmessage").html(""); 
 				$('#myModalLabel').text('系统消息');
@@ -178,6 +180,7 @@ var selectuser = {
 		$("#smallmessage").append("<p>请选择成员！</p><p>"+uls+"</p>");
 		$("#myModalfooter").prepend('<a type="button" id="smallmodalsubmit" class="btn btn-primary" data-dismiss="modal" onclick="selectuser.postsumbit=1;">确认</a>');
 		$('#smallmodal').on('hidden.bs.modal', function (e) {
+			alert("2"+$('#smallselectuser').val());
 			selectuser.postval = $('#smallselectuser').val();
 			$("#myModalfooter").html('<a type="button" id="smallmodalsubmit" class="btn btn-primary" data-dismiss="modal">确认</a>');
 			$("#smallmessage").html(""); 
@@ -225,6 +228,7 @@ function otpost(receiverid){
 		$('#smallmodal').on('hidden.bs.modal', function (e) {
 			$("#smallmessage").html(""); 
 			showpersonnelmanagement();
+			$('#smallmodal').off().on( 'hidden', 'hidden.bs.modal'); 
 		});
 	});
 	}else{
