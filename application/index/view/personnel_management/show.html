@@ -23,16 +23,15 @@
 			<tr><th>业务状态</th><th>业务名称</th><th>申请人</th><th>递交时间</th><th>最近步骤变更时间</th><th>操作</th></tr>
 			{volist name="myworkrecordlist" id="value"}
 			<tr>
-			<td>{$value.state=='false' ? '<span class="label label-default">未通过</span>' : ($value.state=='submit' ? '<span class="label label-warning">审批中</span>' : '<span class="label label-success">已办结</span>')}</td>
-			<td>{$value.businessname}</td>
-			<td>{$value.name}</td>
-			<td>{$value.posttime}</td>
-			<td>{$value.sumbittime}</td>
+			<td>{$value.state=isset($value.state) ? statechange($value.state) : '暂时未有业务'}</td>
+			<td>{$value.businessname|default=""}</td>
+			<td>{$value.name|default=""}</td>
+			<td>{$value.posttime|default=""}</td>
+			<td>{$value.sumbittime|default=""}</td>
 			<td>
-			{$value.id=='' ? '' : '<button type="button" class="btn btn-primary btn-xs businessshowread" value="'.$value.id.'">查看</button>&#12288'}
+			{$value.id = isset($value.id)? '<button type="button" class="btn btn-primary btn-xs businessshowread" value="'.$value.id.'">查看</button>&#12288' : ''}
 			</td></tr>
 			{/volist}
-			{$myworkrecordlist->render()}
 		</table>
 	</div>
     <div role="tabpanel" class="tab-pane" id="eatsituation">

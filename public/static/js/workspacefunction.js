@@ -18,6 +18,7 @@ function targetfunction(funcName,parameter){
 
 }
 
+
 //显示个人业务
 function showpersonalbusiness(){
 	$.post("/index/personal_business/show",
@@ -129,7 +130,24 @@ function showpersonnelmanagement(){
     {},
 	function(data,status){
 		$('#mainworkspace').html(data);
+		$('.businessshowread').click(function(){
+			$.post("/index/business_form/show",
+			{
+				businessid:this.value,
+				method:'read'
+			},
+			function(data,status){
+				$("#smallmodal").after(data);
+				$('#FormModal').modal('show');
+				$('#FormModal').on('hidden.bs.modal', function (e) {
+					$('#FormModal').remove();
+					$('#FormModal').off().on( 'hidden', 'hidden.bs.modal');  
+				   
+				});
+			});
+		});
     });
+	
 }
 
 

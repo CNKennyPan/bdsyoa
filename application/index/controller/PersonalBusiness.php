@@ -18,7 +18,7 @@ class PersonalBusiness extends Controller
 		if (count($resultA)>0){
 			$this->assign('myworklist',$resultA);
 		}else{
-			$resultA=array(array('type'=>'暂时未有业务','businessname'=>'','name'=>'','posttime'=>'','sumbittime'=>'','id'=>''));
+			$resultA=array(array());
 			$this->assign('myworklist',$resultA);
 		}
 		
@@ -27,13 +27,14 @@ class PersonalBusiness extends Controller
 		if (count($resultB)>0){
 			$this->assign('myworkrecordlist',$resultB);
 		}else{
-			$resultB=array(array('type'=>'暂时未有业务','businessname'=>'','name'=>'','posttime'=>'','sumbittime'=>'','id'=>''));
+			$resultB=array(array());
 			$this->assign('myworkrecordlist',$resultB);
 		}
 		
 		return $this->fetch();
 		
     }
+	
 	
 	
 	

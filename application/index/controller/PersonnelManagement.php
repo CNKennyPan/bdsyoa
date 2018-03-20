@@ -20,22 +20,23 @@ class PersonnelManagement extends Controller
 		$this->assign('begintime',"");
 		$this->assign('endtime',"");
 		
-		//$result = Db::table('bdsy_personal_business')->where('type','人事管理')->paginate(5);
-		$result = Db::table('bdsy_personal_business business,bdsy_user_info user')->where('user.id = business.posterid')->paginate(3);
-		
-		//$result = Db::query('select bdsy_personal_business.*,bdsy_user_info.name from bdsy_personal_business,bdsy_user_info where bdsy_personal_business.type="人事管理"')->paginate(5);
-		if (count($result)>0){
-			$this->assign('myworkrecordlist',$result);
+		if($request->session('department')=='综合部'&&$request->session('position')=='部门主管'){
+			$result = Db::table('bdsy_personal_business business,bdsy_user_info user')->where('user.id = business.posterid')->select();
+			if (count($result)>0){
+				$this->assign('myworkrecordlist',$result);
+			}else{
+				$result=array(array());
+				$this->assign('myworkrecordlist',$result);
+			}
 		}else{
-			$result=array(array('type'=>'暂时未有业务','businessname'=>'','name'=>'','posttime'=>'','sumbittime'=>'','id'=>''));
+			$result=array(array());
 			$this->assign('myworkrecordlist',$result);
 		}
 		
+		
+		
 		return $this->fetch();
 		
-		
-		
-		return $this->fetch();
 		
     }
 	
