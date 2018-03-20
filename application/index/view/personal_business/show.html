@@ -14,7 +14,7 @@
   <div class="tab-content" style="margin:10px">
     <div role="tabpanel" class="tab-pane active" id="mywork">
 		<table class="table table-striped">
-			<caption class="text-center"><h3>业务列表</h3></caption>
+			<caption class="text-center"><h3>我的业务</h3></caption>
 			<tr><th>业务类型</th><th>业务名称</th><th>申请人</th><th>接收时间</th><th>最近步骤变更时间</th><th>操作</th></tr>
 			{volist name="myworklist" id="value"}
 			<tr>
@@ -31,7 +31,23 @@
 		</table>
 	</div>
 	<div role="tabpanel" class="tab-pane" id="myworkrecord">
-	
+			<table class="table table-striped">
+			<caption class="text-center"><h3>业务记录</h3></caption>
+			<tr><th>业务状态</th><th>业务类型</th><th>业务名称</th><th>申请人</th><th>递交时间</th><th>最近步骤变更时间</th><th>操作</th></tr>
+			{volist name="myworkrecordlist" id="value"}
+			<tr>
+			<td>{$value.state=='false' ? '<span class="label label-default">未通过</span>' : ($value.state=='submit' ? '<span class="label label-warning">审批中</span>' : '<span class="label label-success">已办结</span>')}</td>
+			<td>{$value.type}</td>
+			<td>{$value.businessname}</td>
+			<td>{$value.name}</td>
+			<td>{$value.posttime}</td>
+			<td>{$value.sumbittime}</td>
+			<td>
+			{$value.id=='' ? '' : '<button type="button" class="btn btn-primary btn-xs businessshowread" value="'.$value.id.'">查看</button>&#12288'}
+			</td></tr>
+			{/volist}
+			
+			</table>
 	</div>
     <div role="tabpanel" class="tab-pane" id="mynews">
 	

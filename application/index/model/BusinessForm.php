@@ -18,11 +18,13 @@ class BusinessForm extends Model
 	var $posttime = "";
 	var $sumbittime = "";
 	var $step = "";
+	var $nowstep = "";
 	var $submitinfo = "";
 	var $submitinfotemp = "";
 	var $formtype = "";
 	var $submit = "";
 	var $footer = "";
+	var $tip = '';
 	
 	public function __construct($businessid,$method,$submiterid){
 		
@@ -44,6 +46,7 @@ class BusinessForm extends Model
 			$this->step = $result[0]['step'];
 			$this->submitinfotemp = json_decode($result[0]['submitinfo'],true);
 			$this->content = json_decode($this->content,true);
+			$this->nowstep = count($this->submitinfotemp);
 		}
 		
 		//表格类型
@@ -60,19 +63,26 @@ class BusinessForm extends Model
 		switch ($method)  //submit   //read   
 		{
 			case "read":
-				$this->footer = '<button type="button" class="btn btn-info" data-dismiss="modal">完成</button>';
+				$this->footer = '<button type="button" class="btn btn-default" data-dismiss="modal">完成</button>';
 			break;
 			case "submit":
-				$this->footer = '<button type="button" class="btn btn-success businessformsubmit" value="1'.$businessid.'" >&#8194同意&#8194</button><button type="button" class="btn btn-warning businessformsubmit" value="0'.$businessid.'">不同意</button>';
+				if($this->nowstep==$this->step-1){
+					$this->footer = '<button type="button" class="btn btn-success businessformsubmit" value="2'.$businessid.'" >&#8194备案&#8194</button>';
+				}else{
+					$this->footer = '<button type="button" class="btn btn-success businessformsubmit" value="1'.$businessid.'" >&#8194同意&#8194</button><button type="button" class="btn btn-danger businessformsubmit" value="0'.$businessid.'">不同意</button>';
+				}
 			break;
 			default:
-				$this->footer = '<button type="button" class="btn btn-info" data-dismiss="modal">完成</button>';
+				$this->footer = '<button type="button" class="btn btn-default" data-dismiss="modal">完成</button>';
 		}
 		
-		
+		//获取历史审批信息
 		foreach($this->submitinfotemp as $n){
-			$feedback = $n['submit']==1 ? 'ok' : 'remove';
+			$this->tip[] = 'default';
+			$feedback = $n['submit']!=0 ? 'ok' : 'remove';
 			$olduserread = Db::query('select name,position from bdsy_user_info where id = "'.$n['submiterid'].'"');
+			//$state = $n['step']==1 ? 'info' : ($this->step - $n['step'] == 0 ? 'info' : 'warning');
+
 			$this->submitinfo = $this->submitinfo.'
 				<div class="row">
 					<div class="form-group col-lg-12 has-feedback">
@@ -84,6 +94,15 @@ class BusinessForm extends Model
 						</div>
 					</div>
 				</div>';
+		}
+		
+		//获取步骤提示信息
+		if(count($this->tip)<$this->step){
+			$this->tip[]='primary';
+		}
+		while(count($this->tip)<$this->step)
+		{
+			$this->tip[]='default';
 		}
 
 		
@@ -109,15 +128,21 @@ class BusinessForm extends Model
 				$submiter = '一般审批';
 		}
 		
+		if($this->nowstep==$this->step-1){
+			$i = '备案';
+			//$s = 'info';
+		}else{
+			$i = '审批';
+			//$s = 'warning';
+		}
 		
-		$number = count($this->content)+1;
 		$this->submit = '
 				<div class="row">
 					<div class="form-group col-lg-12">
-						<span class="label label-primary">请输入审批意见</span>
+						<span class="label label-default">请输入'.$i.'意见</span>
 						<div class="input-group">
 							<span class="input-group-addon" id="basic-addon1">'.$userread[0]['position'].$userread[0]['name'].'：</span>
-							<input type="text" class="form-control" id="businessformsubmitcontent" placeholder="请输入审批意见" value="" aria-describedby="basic-addon1">
+							<input type="text" class="form-control" id="businessformsubmitcontent" placeholder="请输入'.$i.'意见" value="" aria-describedby="basic-addon1">
 						</div>
 					</div>
 				</div>';
@@ -125,12 +150,6 @@ class BusinessForm extends Model
 		
 	}
 	
-	
-	// <div class="form-group has-success has-feedback">
-							// <label class="control-label" for="otforminput'.$number.'">'.$userread[0]['position'].'&#12288'.$userread[0]['name'].'&#12288审批</label>
-							// <input type="text" class="form-control" id="otforminput'.$number.'" readonly>
-							// <span class="glyphicon glyphicon-ok form-control-feedback"></span>
-						// </div>
 	
 
 	

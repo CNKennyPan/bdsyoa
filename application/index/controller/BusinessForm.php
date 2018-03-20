@@ -45,13 +45,16 @@ class BusinessForm extends Controller
 		//加载表格按钮
 		$this->assign('footer',$bfm->footer);
 		
+		//加载步骤提示信息
+		$this->assign('tip',$bfm->tip);
+		
+		
 		return $this->fetch();
 		
     }
 	
+		
 
-
-	
 	 public function update(Request $request){
 		
 		$pb = PersonalBusinessModel::get($request->param('businessid'));
@@ -59,17 +62,29 @@ class BusinessForm extends Controller
 		
 		//添加审批信息
 		$submitinfotemp = json_decode($pb->submitinfo,true);
-		
+		$nowstep = count($submitinfotemp);
 		$submitinfotemp[] = array(
 			'submiterid' => $request->session('id'),
 			'submit' => $request->param('result'),
 			'content' => $request->param('content'),
-			'step' => $pb->step,
+			'step' => $nowstep+1,
 			'time' => date("Y-m-d H:i:s")
 		);
 		$pb->submitinfo = json_encode($submitinfotemp,JSON_UNESCAPED_UNICODE);
 		$pb->receiverid = $request->param('receiverid');
-		$pb->step = $pb->step-1;
+		switch($request->param('result')){
+			case '0':
+				$pb->state = 'false';
+			break;
+			case '1':
+				$pb->state = 'submit';
+			break;
+			case '2':
+				$pb->state = 'success';
+			break;
+		}
+		
+		
 		
 		 if($pb->save()){
 			return '事项审批成功';

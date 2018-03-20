@@ -39,9 +39,13 @@ function showpersonalbusiness(){
 					businessformsubmit.businessid=this.value.substr(1);
 					businessformsubmit.usersubmit=this.value.substr(0,1);
 					businessformsubmit.content= $("#businessformsubmitcontent").val();
-							alert($("#businessformsubmitcontent").val());
+							//alert($("#businessformsubmitcontent").val());
 					$('#FormModal').on('hidden.bs.modal',function (e) {
-							selectuser.showdepartmentlist('businessformsubmit.update');
+							if(businessformsubmit.usersubmit==1){
+								selectuser.showdepartmentlist('businessformsubmit.update');
+							}else{
+								targetfunction('businessformsubmit.update',0);
+							}
 							$('#FormModal').remove();
 							$('#FormModal').off().on( 'hidden', 'hidden.bs.modal');  
 					});
@@ -56,6 +60,23 @@ function showpersonalbusiness(){
 				
 			});
 		});
+		$('.businessshowread').click(function(){
+			$.post("/index/business_form/show",
+			{
+				businessid:this.value,
+				method:'read'
+			},
+			function(data,status){
+				$("#smallmodal").after(data);
+				$('#FormModal').modal('show');
+				$('#FormModal').on('hidden.bs.modal', function (e) {
+					$('#FormModal').remove();
+					$('#FormModal').off().on( 'hidden', 'hidden.bs.modal');  
+				   
+				});
+			});
+		});
+		
     });
 	
 }
@@ -64,8 +85,16 @@ var businessformsubmit = {
 	businessid:"",
 	usersubmit:"",
 	content:"",
+	msg:"",
 	update:function(receiverid){
-		alert(businessformsubmit.businessid+'@'+businessformsubmit.content+'@'+businessformsubmit.usersubmit+'@'+receiverid);
+		//alert(businessformsubmit.businessid+'@'+businessformsubmit.content+'@'+businessformsubmit.usersubmit+'@'+receiverid);
+		if(businessformsubmit.usersubmit==1){
+			businessformsubmit.msg = '<p>事项已转交下一步接收人！</p>';
+		}else if(businessformsubmit.usersubmit==2){
+			businessformsubmit.msg = '<p>事项已备案！</p>';
+		}else{
+			businessformsubmit.msg = '<p>事项已退回申请人！</p>';
+		}
 		$.post("/index/business_form/update",
 		{
 			businessid:businessformsubmit.businessid,
@@ -75,7 +104,7 @@ var businessformsubmit = {
 		},
 		function(data,status){
 			if(data=='事项审批成功'){
-				$("#smallmessage").html("<p>事项审批成功！</p>");
+				$("#smallmessage").html(businessformsubmit.msg);
 			}else{
 				$("#smallmessage").html("<p>事项审批失败！请重试！</p>"+data);
 			}
@@ -85,9 +114,9 @@ var businessformsubmit = {
 				showpersonalbusiness();
 				$('#smallmodal').off().on( 'hidden', 'hidden.bs.modal'); 
 			});
-	});
+		});
 		
-	}
+	},
 	
 }
 
@@ -141,7 +170,7 @@ var selectuser = {
 			$("#smallmodal").modal('show');
 			$('#smallmodal').on('hidden.bs.modal', function (e) {
 			if(selectuser.postsumbit==0){
-				alert("1"+$('#smallselectuser').val());
+				//alert("1"+$('#smallselectuser').val());
 				$("#myModalfooter").html('<a type="button" id="smallmodalsubmit" class="btn btn-primary" data-dismiss="modal">确认</a>');
 				$("#smallmessage").html(""); 
 				$('#myModalLabel').text('系统消息');
@@ -180,7 +209,7 @@ var selectuser = {
 		$("#smallmessage").append("<p>请选择成员！</p><p>"+uls+"</p>");
 		$("#myModalfooter").prepend('<a type="button" id="smallmodalsubmit" class="btn btn-primary" data-dismiss="modal" onclick="selectuser.postsumbit=1;">确认</a>');
 		$('#smallmodal').on('hidden.bs.modal', function (e) {
-			alert("2"+$('#smallselectuser').val());
+			//alert("2"+$('#smallselectuser').val());
 			selectuser.postval = $('#smallselectuser').val();
 			$("#myModalfooter").html('<a type="button" id="smallmodalsubmit" class="btn btn-primary" data-dismiss="modal">确认</a>');
 			$("#smallmessage").html(""); 
@@ -188,7 +217,7 @@ var selectuser = {
 			if(selectuser.postsumbit==1){
 				//alert(selectuser.postval);
 				selectuser.userid= selectuser.postval.substring((selectuser.postval.indexOf('（')+1),selectuser.postval.lastIndexOf('）'));
-				alert(selectuser.userid+"@"+selectuser.postval)
+				//alert(selectuser.userid+"@"+selectuser.postval)
 				targetfunction(selectuser.postmethodname,selectuser.userid);
 				selectuser.postsumbit=0;
 				selectuser.postmethodname='';
@@ -215,8 +244,7 @@ function otpost(receiverid){
 		type:'人事管理',
 		businessname:'加班申请单',
 		receiverid:receiverid,
-		content:content,
-		step:'5'
+		content:content
 	},
 	function(data,status){
 		if(data=='提交成功'){
@@ -289,7 +317,7 @@ function showeateveryday(){
 			return today;
 		}
 
-		window.setInterval(function(){$("#time").text(format())},1000);
+		var time = setInterval(function(){$("#time").text(format())},1000);
  
     }); 
 	
