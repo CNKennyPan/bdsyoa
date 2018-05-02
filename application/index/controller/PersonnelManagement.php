@@ -34,6 +34,14 @@ class PersonnelManagement extends Controller
 		}
 		
 		
+		$resultA = Db::query('select bdsy_personal_business.*,bdsy_user_info.name from bdsy_personal_business,bdsy_user_info where bdsy_personal_business.posterid = "'.$request->session('id').'" and bdsy_personal_business.posterid=bdsy_user_info.id');
+		if (count($resultA)>0){
+			$this->assign('myworkrecordlist',$resultA);
+		}else{
+			$resultA=array(array());
+			$this->assign('myworkrecordlist',$resultA);
+		}
+		
 		
 		return $this->fetch();
 		

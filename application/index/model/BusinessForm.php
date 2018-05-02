@@ -5,7 +5,7 @@ namespace app\index\model;
 use think\Model;
 use think\Db;
 use think\Request; 
-
+use app\index\model\UserInfo as UserInfoModel;
 
 class BusinessForm extends Model
 {
@@ -48,6 +48,9 @@ class BusinessForm extends Model
 			$this->content = json_decode($this->content,true);
 			$this->nowstep = count($this->submitinfotemp);
 		}
+			
+		
+		
 		
 		//表格类型
 		switch($this->businessname)

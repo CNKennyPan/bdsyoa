@@ -7,6 +7,7 @@ use think\Request;
 use think\Db;
 use app\index\model\BusinessForm as BusinessFormModel;
 use app\index\model\PersonalBusiness as PersonalBusinessModel;
+use app\index\model\UserInfo as UserInfoModel;
 
 
 //主函数
@@ -14,6 +15,13 @@ class BusinessForm extends Controller
 {
     public function show(Request $request)
     {
+		//消息已读
+		$user = UserInfoModel::get($request->session('id'));
+		$havereadtemp = $user->pmread;
+		$havereadtemp = $havereadtemp.$request->param('businessid').',';
+		$user->pmread = $havereadtemp;
+		$user->save();
+		
 		$bfm = new BusinessFormModel($request->param('businessid'),$request->param('method'),$request->session('id'));
 		
 		//加载表格

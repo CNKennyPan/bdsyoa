@@ -89,8 +89,30 @@
 					<button type="submit" class="btn btn-primary " onclick="selectuser.showdepartmentlist('otpost')">提交申请</button>
 				</div>
 	</div>
-</div>
 	
+</div>
+
+<div class="panel panel-default">
+			<div class="panel-heading text-center"><h3>申请记录</h3></div>
+			<div class="panel-body">
+			<table class="table table-striped">
+			<tr><th>业务状态</th><th>业务类型</th><th>业务名称</th><th>申请人</th><th>递交时间</th><th>最近步骤变更时间</th><th>操作</th></tr>
+			{volist name="myworkrecordlist" id="value"}
+			<tr>
+			<td>{$value.state = isset($value.state) ? statechange($value.state) : '暂时未有业务'}</td>
+			<td>{$value.type|default=""}</td>
+			<td>{$value.businessname|default=""}</td>
+			<td>{$value.name|default=""}</td>
+			<td>{$value.posttime|default=""}</td>
+			<td>{$value.sumbittime|default=""}</td>
+			<td>
+			{$value.id= isset($value.id) ? '<button type="button" class="btn btn-primary btn-xs businessshowread" value="'.$value.id.'">查看</button>&#12288' : ''}
+			</td></tr>
+			{/volist}
+			
+			</table>
+	</div>
+</div>
 		
 <!-- 包括datetimepicker插件 -->
 <script type="text/javascript" src="/static/js/bootstrap-datetimepicker.min.js" charset="UTF-8"></script>
