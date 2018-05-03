@@ -20,7 +20,7 @@ function targetfunction(funcName,parameter){
 
 
 //显示个人业务
-function showpersonalbusiness(){
+function showpersonalbusiness(tab){
 	$.post("/index/personal_business/show",
     {},
 	function(data,status){
@@ -61,6 +61,7 @@ function showpersonalbusiness(){
 				
 			});
 		});
+		//注册查看按钮点击事件
 		$('.businessshowread').click(function(){
 			$.post("/index/business_form/show",
 			{
@@ -72,12 +73,34 @@ function showpersonalbusiness(){
 				$('#FormModal').modal('show');
 				$('#FormModal').on('hidden.bs.modal', function (e) {
 					$('#FormModal').remove();
-					$('#FormModal').off().on( 'hidden', 'hidden.bs.modal');  
-				   
+					$('#FormModal').off().on( 'hidden', 'hidden.bs.modal');
+					showpersonalbusiness('myworkrecord');
 				});
 			});
 		});
-		
+		//注册删除按钮点击事件
+		$('.businessshowdelete').click(function(){
+			$.post("/index/business_form/deleterecord",
+			{
+				businessid:this.value
+			},
+			function(data,status){
+				if(data=='事项删除成功'){
+					$("#smallmessage").html('删除成功');
+				}else{
+					$("#smallmessage").html('删除失败');
+				}
+				$("#smallmodal").modal('show');
+				$('#smallmodal').on('hidden.bs.modal', function (e) {
+				$("#smallmessage").html(""); 
+				showpersonalbusiness('myworkrecord');
+				$('#smallmodal').off().on( 'hidden', 'hidden.bs.modal'); 
+				});
+			});
+		});
+		$(document).ajaxStop(function(){
+			$('#personalbusinesstab a[href="#'+tab+'"]').tab('show');
+		})
     });
 	
 }
@@ -104,6 +127,7 @@ var businessformsubmit = {
 			receiverid:receiverid
 		},
 		function(data,status){
+			$('#mynews').text('data');
 			if(data=='事项审批成功'){
 				$("#smallmessage").html(businessformsubmit.msg);
 			}else{
@@ -112,7 +136,7 @@ var businessformsubmit = {
 			$("#smallmodal").modal('show');
 			$('#smallmodal').on('hidden.bs.modal', function (e) {
 				$("#smallmessage").html(""); 
-				showpersonalbusiness();
+				showpersonalbusiness('mywork');
 				$('#smallmodal').off().on( 'hidden', 'hidden.bs.modal'); 
 			});
 		});

@@ -13,43 +13,30 @@ class PersonalBusiness extends Controller
 {
     public function show(Request $request)
     {
-
-		$resultA = Db::query('select bdsy_personal_business.*,bdsy_user_info.name from bdsy_personal_business,bdsy_user_info where bdsy_personal_business.receiverid = "'.$request->session('id').'" and bdsy_personal_business.posterid=bdsy_user_info.id');
-		if (count($resultA)>0){
-			$this->assign('myworklist',$resultA);
+		$pbm = new PersonalBusinessModel;
+		$pbm->showbusiness($request->session('id'));
+		
+		if (count($pbm->myworkcontent)>0){
+			$this->assign('myworklist',$pbm->myworkcontent);
 		}else{
-			$resultA=array(array());
-			$this->assign('myworklist',$resultA);
+			$temp=array(array());
+			$this->assign('myworklist',$temp);
 		}
 		
 		
-		//获取所有审批人
-			$submiter = Db::query('select bdsy_personal_business.*,bdsy_user_info.name from bdsy_personal_business,bdsy_user_info where bdsy_personal_business.posterid=bdsy_user_info.id');
-			$resultB = array();
-			foreach($submiter as $value){
-				$submitinfo = json_decode($value['submitinfo'],true);
-				foreach($submitinfo as $infolist){
-					if($infolist['submiterid']==$request->session('id')){
-						$resultB[] =  $value;
-					}
-				}
-			}
-			//return dump($resultB);
-			
-		//$resultB = Db::query('select bdsy_personal_business.*,bdsy_user_info.name from bdsy_personal_business,bdsy_user_info where bdsy_personal_business.posterid = "'.$request->session('id').'" and bdsy_personal_business.posterid=bdsy_user_info.id');
-		if (count($resultB)>0){
-			$this->assign('myworkrecordlist',$resultB);
+		if (count($pbm->myworkrecordcontent)>0){
+			$this->assign('myworkrecordlist',$pbm->myworkrecordcontent);
 		}else{
-			$resultB=array(array());
-			$this->assign('myworkrecordlist',$resultB);
+			$temp=array(array());
+			$this->assign('myworkrecordlist',$temp);
 		}
 		
-
-		//消息已读检测
-		$user = UserInfoModel::get($request->session('id'));
-		$haveread = explode(',',$user->pmread);
 		
-		
+		//显示未读消息
+		$this->assign('recordnumber',$pbm->recordnumber);
+		$this->assign('matternumber',$pbm->matternumber);
+	
+		//return dump($pbm->myworkrecordcontent);
 		return $this->fetch();
 		
     }

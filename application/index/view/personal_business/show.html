@@ -1,8 +1,8 @@
 <div>
   <!-- Nav tabs -->
-  <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a href="#mywork" aria-controls="mywork" role="tab" data-toggle="tab">我的业务</a></li>
-	<li role="presentation"><a href="#myworkrecord" aria-controls="myworkrecord" role="tab" data-toggle="tab">业务记录</a></li>
+  <ul class="nav nav-tabs" role="tablist" id="personalbusinesstab">
+    <li role="presentation" class="active"><a href="#mywork" aria-controls="mywork" role="tab" data-toggle="tab">我的业务{$matternumber= $matternumber!=0 && isset($matternumber)? '<span class="badge">'.$matternumber.'</span>' : ''}</a></li>
+	<li role="presentation"><a href="#myworkrecord" aria-controls="myworkrecord" role="tab" data-toggle="tab">业务进度{$recordnumber= $recordnumber!=0 && isset($recordnumber)? '<span class="badge">'.$recordnumber.'</span>' : ''}</a></li>
 	<li role="presentation"><a href="#mynews" aria-controls="mynews" role="tab" data-toggle="tab">消息通知</a></li>
 	<!-- 备用
     <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Messages</a></li>
@@ -29,25 +29,28 @@
 			{/volist}
 			
 		</table>
+
 	</div>
 	<div role="tabpanel" class="tab-pane" id="myworkrecord">
 			<table class="table table-striped">
-			<caption class="text-center"><h3>业务记录</h3></caption>
-			<tr><th>业务状态</th><th>业务类型</th><th>业务名称</th><th>申请人</th><th>递交时间</th><th>最近步骤变更时间</th><th>操作</th></tr>
+			<caption class="text-center"><h3>业务进度</h3></caption>
+			<tr><th>消息情况</th><th>业务类型</th><th>业务名称</th><th>申请人</th><th>递交时间</th><th>最近步骤变更时间</th><th>业务状态</th><th>操作</th></tr>
 			{volist name="myworkrecordlist" id="value"}
 			<tr>
-			<td>{$value.state = isset($value.state) ? statechange($value.state) : '暂时未有业务'}</td>
+			<td>{$value.read = $value.read=='false' ? '<span class="label label-danger">未查看</span>' : '<span class="label label-default">已查看</span>'}</td>
 			<td>{$value.type|default=""}</td>
 			<td>{$value.businessname|default=""}</td>
 			<td>{$value.name|default=""}</td>
 			<td>{$value.posttime|default=""}</td>
 			<td>{$value.sumbittime|default=""}</td>
+			<td>{$value.state = isset($value.state) ? statechange($value.state) : '暂时未有业务'}</td>
 			<td>
-			{$value.id= isset($value.id) ? '<button type="button" class="btn btn-primary btn-xs businessshowread" value="'.$value.id.'">查看</button>&#12288' : ''}
+			{$value.id= isset($value.id) ? '<button type="button" class="btn btn-primary btn-xs businessshowread" value="'.$value.id.'">查看</button>&#12288<button type="button" class="btn btn-danger btn-xs businessshowdelete" value="'.$value.id.'">删除</button>&#12288' : ''}
 			</td></tr>
 			{/volist}
 			
 			</table>
+			
 	</div>
     <div role="tabpanel" class="tab-pane" id="mynews">
 	
@@ -59,3 +62,4 @@
   </div>
 
 </div>
+

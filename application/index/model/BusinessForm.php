@@ -6,6 +6,7 @@ use think\Model;
 use think\Db;
 use think\Request; 
 use app\index\model\UserInfo as UserInfoModel;
+use app\index\model\PersonalBusiness as PersonalBusinessModel;
 
 class BusinessForm extends Model
 {
@@ -49,7 +50,10 @@ class BusinessForm extends Model
 			$this->nowstep = count($this->submitinfotemp);
 		}
 			
-		
+		//消息已读
+		$pb = PersonalBusinessModel::get($businessid);
+		$pb->haveread = $pb->haveread . $submiterid . ',';
+		$pb->save();
 		
 		
 		//表格类型

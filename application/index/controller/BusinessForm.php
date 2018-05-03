@@ -15,13 +15,7 @@ class BusinessForm extends Controller
 {
     public function show(Request $request)
     {
-		//消息已读
-		$user = UserInfoModel::get($request->session('id'));
-		$havereadtemp = $user->pmread;
-		$havereadtemp = $havereadtemp.$request->param('businessid').',';
-		$user->pmread = $havereadtemp;
-		$user->save();
-		
+
 		$bfm = new BusinessFormModel($request->param('businessid'),$request->param('method'),$request->session('id'));
 		
 		//加载表格
@@ -91,8 +85,7 @@ class BusinessForm extends Controller
 				$pb->state = 'success';
 			break;
 		}
-		
-		
+		$pb->haveread = null;
 		
 		 if($pb->save()){
 			return '事项审批成功';
@@ -101,7 +94,17 @@ class BusinessForm extends Controller
 			}
 		 
 	 }
-	
+	 
+	 //添加删除记录
+	 public function deleterecord(Request $request){
+		 $pb = PersonalBusinessModel::get($request->param('businessid'));
+		 $pb->deleterecord = $pb->deleterecord . $request->session('id') . ',';
+		  if($pb->save()){
+			return '事项删除成功';
+			}else{
+			return '事项删除失败'.$pb->getError();
+		}
+	 }
 	
 	
 }
