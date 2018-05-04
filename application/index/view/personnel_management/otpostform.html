@@ -106,7 +106,7 @@
 			<td>{$value.posttime|default=""}</td>
 			<td>{$value.sumbittime|default=""}</td>
 			<td>
-			{$value.id= isset($value.id) ? '<button type="button" class="btn btn-primary btn-xs businessshowread" value="'.$value.id.'">查看</button>&#12288' : ''}
+			{$value.id= isset($value.id) ? '<button type="button" class="btn btn-primary btn-xs businessshowread" value="'.$value.id.'">查看</button>&#12288<button type="button" class="btn btn-danger btn-xs otpostdelete" value="'.$value.id.'">删除</button>&#12288' : ''}
 			</td></tr>
 			{/volist}
 			

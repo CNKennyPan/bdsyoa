@@ -6,6 +6,7 @@ use think\Session;
 use think\Request; 
 use app\index\model\PersonalBusiness as PersonalBusinessModel;
 use think\Db;
+use app\index\model\PersonnelManagement as PersonnelManagementModel;
 
 //主函数
 class PersonnelManagement extends Controller
@@ -34,12 +35,14 @@ class PersonnelManagement extends Controller
 		}
 		
 		
-		$resultA = Db::query('select bdsy_personal_business.*,bdsy_user_info.name from bdsy_personal_business,bdsy_user_info where bdsy_personal_business.posterid = "'.$request->session('id').'" and bdsy_personal_business.posterid=bdsy_user_info.id');
-		if (count($resultA)>0){
-			$this->assign('myworkrecordlist',$resultA);
+		//显示申请记录
+		$pm = new PersonnelManagementModel;
+		
+		if (count($pm->showotpost($request->session('id')))>0){
+			$this->assign('myworkrecordlist',$pm->showotpost($request->session('id')));
 		}else{
-			$resultA=array(array());
-			$this->assign('myworkrecordlist',$resultA);
+			$temp=array(array());
+			$this->assign('myworkrecordlist',$temp);
 		}
 		
 		
@@ -65,7 +68,7 @@ class PersonnelManagement extends Controller
 		),JSON_UNESCAPED_UNICODE);
 		$pb->step = 5;
 		$pb->state = 'submit';
-		
+		$pb->sumbittime = date("Y-m-d H:i:s");
 		
 		 if($pb->save()){
            return '提交成功';
@@ -76,6 +79,21 @@ class PersonnelManagement extends Controller
 		
     }
 	
+	
+	public function otpostdelete(Request $request){
+		
+		$pb = new PersonalBusinessModel;
+		
+		$matter = PersonalBusinessModel::get($request->param('businessid'));
+		
+		if ($matter) {
+			$matter->delete();
+			return '删除事项成功';
+		}else{
+			return '删除事项失败';
+		}
+		
+	}
 	
 	
 }

@@ -55,6 +55,7 @@ function showpersonalbusiness(tab){
 				$('#FormModal').modal('show');
 				$('#FormModal').on('hidden.bs.modal', function (e) {
 					$('#FormModal').remove();
+					showpersonalbusiness('mywork');
 					$('#FormModal').off().on( 'hidden', 'hidden.bs.modal');  
 				   
 				});
@@ -73,8 +74,8 @@ function showpersonalbusiness(tab){
 				$('#FormModal').modal('show');
 				$('#FormModal').on('hidden.bs.modal', function (e) {
 					$('#FormModal').remove();
-					$('#FormModal').off().on( 'hidden', 'hidden.bs.modal');
 					showpersonalbusiness('myworkrecord');
+					$('#FormModal').off().on( 'hidden', 'hidden.bs.modal');
 				});
 			});
 		});
@@ -98,9 +99,7 @@ function showpersonalbusiness(tab){
 				});
 			});
 		});
-		$(document).ajaxStop(function(){
-			$('#personalbusinesstab a[href="#'+tab+'"]').tab('show');
-		})
+		$('#personalbusinesstab a[href="#'+tab+'"]').tab('show');
     });
 	
 }
@@ -154,6 +153,7 @@ function showpersonnelmanagement(){
     {},
 	function(data,status){
 		$('#mainworkspace').html(data);
+		//注册查看按钮点击事件
 		$('.businessshowread').click(function(){
 			$.post("/index/business_form/show",
 			{
@@ -167,6 +167,27 @@ function showpersonnelmanagement(){
 					$('#FormModal').remove();
 					$('#FormModal').off().on( 'hidden', 'hidden.bs.modal');  
 				   
+				});
+			});
+		});
+		
+		//注册删除按钮点击事件
+		$('.otpostdelete').click(function(){
+			$.post("/index/personnel_management/otpostdelete",
+			{
+				businessid:this.value
+			},
+			function(data,status){
+				if(data=='删除事项成功'){
+					$("#smallmessage").html('申请事项删除成功');
+				}else{
+					$("#smallmessage").html('申请事项删除失败');
+				}
+				$("#smallmodal").modal('show');
+				$('#smallmodal').on('hidden.bs.modal', function (e) {
+				$("#smallmessage").html(""); 
+				showpersonnelmanagement();
+				$('#smallmodal').off().on( 'hidden', 'hidden.bs.modal'); 
 				});
 			});
 		});

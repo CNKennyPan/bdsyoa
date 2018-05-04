@@ -48,7 +48,7 @@ class BusinessForm extends Model
 			$this->submitinfotemp = json_decode($result[0]['submitinfo'],true);
 			$this->content = json_decode($this->content,true);
 			$this->nowstep = count($this->submitinfotemp);
-		}
+		
 			
 		//消息已读
 		$pb = PersonalBusinessModel::get($businessid);
@@ -63,7 +63,7 @@ class BusinessForm extends Model
 				$this->formtype="business_form/otform";
 			break;
 			default:
-				$this->formtype="business_form/otform";
+				$this->formtype="business_form/error";
 		}
 		
 		//审批按钮
@@ -153,6 +153,9 @@ class BusinessForm extends Model
 						</div>
 					</div>
 				</div>';
+				
+		
+		}
 				
 		
 	}

@@ -18,41 +18,46 @@ class BusinessForm extends Controller
 
 		$bfm = new BusinessFormModel($request->param('businessid'),$request->param('method'),$request->session('id'));
 		
-		//加载表格
-		$this->assign('body',$bfm->formtype);
+		if($bfm->formtype!=''){
+			//加载表格
+			$this->assign('body',$bfm->formtype);
 		
-		//加载表格内容
-		$i = 0;
-		foreach($bfm->content as $value){
-			$this->assign("input".$i,$value);
-			$i = $i + 1 ;
+			//加载表格内容
+			$i = 0;
+			foreach($bfm->content as $value){
+				$this->assign("input".$i,$value);
+				$i = $i + 1 ;
+			}
+		
+			//加载审批栏
+			switch($request->param('method'))
+			{
+				case "read":
+					$this->assign('submitinfo',$bfm->submitinfo);
+					$this->assign('submit','');
+				break;
+				case "submit":
+					$this->assign('submitinfo',$bfm->submitinfo);
+					$this->assign('submit',$bfm->submit);
+				break;
+				default:
+					$this->assign('submitinfo',$bfm->submitinfo);
+					$this->assign('submit','');
+			}
+		
+			//加载表格按钮
+			$this->assign('footer',$bfm->footer);
+		
+			//加载步骤提示信息
+			$this->assign('tip',$bfm->tip);
+		}else{
+			$this->assign('body','business_form/error');
 		}
 		
-		//加载审批栏
-		switch($request->param('method'))
-		{
-			case "read":
-				$this->assign('submitinfo',$bfm->submitinfo);
-				$this->assign('submit','');
-			break;
-			case "submit":
-				$this->assign('submitinfo',$bfm->submitinfo);
-				$this->assign('submit',$bfm->submit);
-			break;
-			default:
-				$this->assign('submitinfo',$bfm->submitinfo);
-				$this->assign('submit','');
-		}
 		
-		//加载表格按钮
-		$this->assign('footer',$bfm->footer);
-		
-		//加载步骤提示信息
-		$this->assign('tip',$bfm->tip);
-		
-		
+		//return dump($bfm->formtype);
 		return $this->fetch();
-		
+	
     }
 	
 		
@@ -86,6 +91,8 @@ class BusinessForm extends Controller
 			break;
 		}
 		$pb->haveread = null;
+		$pb->deleterecord = null;
+		$pb->sumbittime = date("Y-m-d H:i:s");
 		
 		 if($pb->save()){
 			return '事项审批成功';
