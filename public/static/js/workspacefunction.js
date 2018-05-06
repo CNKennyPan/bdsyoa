@@ -25,6 +25,10 @@ function showpersonalbusiness(tab){
     {},
 	function(data,status){
 		$('#mainworkspace').html(data);
+		myworkrecord = new pagination($('#myworkrecord').html(),'myworkrecord');
+		$('#myworkrecord').append(myworkrecord.nav);
+		//pagination($('#mywork').html(),'mywork');
+		//pagination($('#myworkrecord').html(),'myworkrecord');
 		//注册审批按钮点击事件
 		$('.businessshowsubmit').click(function(){
 
@@ -479,4 +483,67 @@ function formreadonly(formname,number){
 		// $("#"+formname+"input"+i).removeAttr("readOnly");
 	// }
 }
+
+//分页
+function pagination(content,sign)
+{
+    this.sign=sign;
+	this.alltr=content.match(/\<tr\>/g);
+	this.prepagenumber=3;
+	this.page=Math.ceil(this.alltr.length/this.prepagenumber);
+	this.temp=content;
+	this.navhead='<nav aria-label="Page navigation" id='+this.sign+'nav ><ul class="pagination">';
+	this.Previous='<li><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
+	this.navbody='';
+	this.next='<li><a href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>';
+	this.navfoot=' </ul></nav>';
+	this.nav='';
+	this.now=1;
+	//Previous\next
+	
+	
+	//初始化：
+	
+	
+	//添加标记并隐藏
+    for(id in this.alltr){
+		this.content=this.temp.replace("<tr>","<tr "+"id="+this.sign+'tb'+id+">");
+		this.temp=this.content;
+		$('#myworkrecordtb0').hide();
+		alert('隐藏');
+	}
+	
+	//重新添加表格
+	$('#'+sign).html(this.content);
+	
+	//检测当前页数并变化导航栏
+	if(this.now==1){
+		this.Previous='<li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
+	}else{
+		this.Previous='<li><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
+	}
+	if(this.now-this.page==0){
+		this.next='<li class="disabled"><a href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>';
+	}else{
+		this.next='<li><a href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>';
+	}
+	
+	//合拼导航栏
+	for(var i=0;i<this.page;i++){
+		this.navbody=this.navbody+'<li><a href="#">'+(i+1)+'</a></li>';
+	}
+	this.nav=this.navhead+this.Previous+this.navbody+this.next+this.navfoot;
+	
+	
+	for(var i=0;i<this.prepagenumber;i++){
+		//$('#'+this.sign+'tb'+i).show();
+	}
+	
+	
+	
+	
+	
+	
+}
+
 

@@ -45,7 +45,7 @@
 			<td>{$value.sumbittime|default=""}</td>
 			<td>{$value.state = isset($value.state) ? statechange($value.state) : ''}</td>
 			<td>
-			{$value.id= isset($value.id) ? '<button type="button" class="btn btn-primary btn-xs businessshowread" value="'.$value.id.'">查看</button>&#12288<button type="button" class="btn btn-danger btn-xs businessshowdelete" value="'.$value.id.'">删除</button>&#12288' : ''}
+			{$value.id= isset($value.id) ? '<button type="button" class="btn btn-primary btn-xs businessshowread" value="'.$value.id.'">查看</button>&#12288<button type="button" class="btn btn-warning btn-xs businessshowdelete" value="'.$value.id.'">隐藏</button>&#12288' : ''}
 			</td></tr>
 			{/volist}
 			
