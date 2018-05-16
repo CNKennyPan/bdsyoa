@@ -2,7 +2,7 @@
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
     <li role="presentation" class="active"><a href="#otpostform" aria-controls="otpostform" role="tab" data-toggle="tab">加班申请</a></li>
-    <li role="presentation"><a href="#eatsituation" aria-controls="eatsituation" role="tab" data-toggle="tab">请假申请</a></li>
+    <li role="presentation"><a href="#leavepostform" aria-controls="leavepostform" role="tab" data-toggle="tab">请假申请</a></li>
 	<li role="presentation"><a href="#eatsituation" aria-controls="eatsituation" role="tab" data-toggle="tab">转正申请</a></li>
 	<li role="presentation"><a href="#eatsituation" aria-controls="eatsituation" role="tab" data-toggle="tab">薪酬调整</a></li>
 	<li role="presentation"><a href="#personnelmanagementhistory" aria-controls="personnelmanagementhistory" role="tab" data-toggle="tab">办结历史</a></li>
@@ -16,6 +16,9 @@
   <div class="tab-content" style="margin:10px">
     <div role="tabpanel" class="tab-pane active" id="otpostform">
 		{include file="personnel_management/otpostform" /}
+	</div>
+	<div role="tabpanel" class="tab-pane active" id="leavepostform">
+		{include file="personnel_management/leavepostform" /}
 	</div>
 	<div role="tabpanel" class="tab-pane" id="personnelmanagementhistory">
 		<table class="table table-striped">

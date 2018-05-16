@@ -164,9 +164,9 @@ function showpersonnelmanagement(){
 	function(data,status){
 		$('#mainworkspace').html(data);
 		//分页
-		otpostform = new pagination($('#otpostform').html(),'otpostform',5);
-		$('#otpostform').append(otpostform.nav);
-		otpostform.signupClick('otpostform');
+		otpostformrecord = new pagination($('#otpostformrecord').html(),'otpostformrecord',5);
+		$('#otpostformrecord').append(otpostformrecord.nav);
+		otpostformrecord.signupClick('otpostformrecord');
 		//注册查看按钮点击事件
 		$('.businessshowread').click(function(){
 			$.post("/index/business_form/show",
@@ -520,7 +520,11 @@ function pagination(content,sign,userpage)
 	var columntemp2=columntemp[0].match(/\<th\>/g);
 	this.column=columntemp2.length;
 	
-
+	//截取table
+	var temptemp = this.temp.match(/\<table[\s\S]+\<\/table\>/);
+	this.temp = temptemp[0];
+	
+	//将获取的字符串分段以方便插入空白行
 	var addtemp1=this.temp.substr(0,this.temp.lastIndexOf('</tr>'));
 	var addtemp3=this.temp.substr(this.temp.lastIndexOf('</tr>'));
     var addtemp2='';
@@ -543,6 +547,7 @@ function pagination(content,sign,userpage)
 		this.content=this.temp.replace("<tr>","<tr "+"id="+this.sign+'tb'+id+">");
 		this.temp=this.content;
 	}
+	
 	
 	//重新添加表格
 	$('#'+sign).html(this.content);

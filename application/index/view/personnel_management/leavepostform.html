@@ -2,32 +2,31 @@
 			<div class="panel-heading text-center"><h3>审批流程</h3></div>
 			<div class="panel-body">
 			<span class="label label-default">申请人递交</span><i class="icon-arrow-right"></i>
-			<span class="label label-default">部门负责人审批</span><i class="icon-arrow-right"></i>
-			<span class="label label-default">综合部初审</span><i class="icon-arrow-right"></i>
-			<span class="label label-default">总经理审批</span><i class="icon-arrow-right"></i>
+			<span class="label label-default">部门负责人审批（三天以下）</span><i class="icon-arrow-right"></i>
+			<span class="label label-default">总经理审批（三天以上）</span><i class="icon-arrow-right"></i>
 			<span class="label label-default">综合部备案</span>
 	</div>
 </div>
 <div class="panel panel-default" >
-	<div class="panel-heading text-center"><h3>加班申请单</h3></div>
+	<div class="panel-heading text-center"><h3>请假申请单</h3></div>
 	<div class="panel-body" style="padding:10px">
 				<div class="row">
 					<div class="form-group col-lg-4">
 						<div class="input-group">
 							<span class="input-group-addon" id="basic-addon1">申&#8194请&#8194人</span>
-							<input type="text" class="form-control" id="otforminput0" placeholder="请输入申请人姓名" value="{$name}" aria-describedby="basic-addon1" readonly="readonly" >
+							<input type="text" class="form-control" id="leaveforminput0" placeholder="请输入申请人姓名" value="{$name}" aria-describedby="basic-addon1" readonly="readonly" >
 						</div>
 					</div>
 					<div class="form-group col-lg-4">
 						<div class="input-group">
 							<span class="input-group-addon" id="basic-addon1">所属部门</span>
-							<input type="text" class="form-control" id="otforminput1" placeholder="请输入部门名称" value="{$department}" aria-describedby="basic-addon1" readonly="readonly" >
+							<input type="text" class="form-control" id="leaveforminput1" placeholder="请输入部门名称" value="{$department}" aria-describedby="basic-addon1" readonly="readonly" >
 						</div>
 					</div>
 					<div class="form-group col-lg-4">
 						<div class="input-group">
 							<span class="input-group-addon" id="basic-addon1">职&#12288&#12288位</span>
-							<input type="text" class="form-control" id="otforminput2" placeholder="请输入申请人职位" value="{$position}" aria-describedby="basic-addon1" readonly="readonly" >
+							<input type="text" class="form-control" id="leaveforminput2" placeholder="请输入申请人职位" value="{$position}" aria-describedby="basic-addon1" readonly="readonly" >
 						</div>
 					</div>
 				</div>
@@ -35,15 +34,15 @@
 					<div class="form-group col-lg-6">
 							<div class="input-group">
 							<span class="input-group-addon" id="basic-addon1">开始时间</span>
-							<input type="text" class="form-control " id="otforminput3" placeholder="请选择加班开始时间" aria-describedby="basic-addon1" value="{$begintime}"  readonly="readonly" >
-							<span class="input-group-addon"><span class="glyphicon glyphicon-calendar form_date" data-link-field="otforminput3" data-link-format="yyyy-mm-dd hh:ii"></span></span>
+							<input type="text" class="form-control " id="leaveforminput3" placeholder="请选择加班开始时间" aria-describedby="basic-addon1" value="{$begintime}"  readonly="readonly" >
+							<span class="input-group-addon"><span class="glyphicon glyphicon-calendar form_date" data-link-field="leaveforminput3" data-link-format="yyyy-mm-dd hh:ii"></span></span>
 						</div>
 					</div>
 					<div class="form-group col-lg-6">
 							<div class="input-group">
 							<span class="input-group-addon" id="basic-addon1">结束时间</span>
-							<input type="text" class="form-control " id="otforminput4" placeholder="请选择加班结束时间" aria-describedby="basic-addon1" value="{$endtime}" readonly="readonly" >
-							<span class="input-group-addon"><span class="glyphicon glyphicon-calendar form_date" data-link-field="otforminput4" data-link-format="yyyy-mm-dd hh:ii"></span></span>
+							<input type="text" class="form-control " id="leaveforminput4" placeholder="请选择加班结束时间" aria-describedby="basic-addon1" value="{$endtime}" readonly="readonly" >
+							<span class="input-group-addon"><span class="glyphicon glyphicon-calendar form_date" data-link-field="leaveforminput4" data-link-format="yyyy-mm-dd hh:ii"></span></span>
 						</div>
 					</div>
 				</div>
@@ -51,22 +50,49 @@
 					<div class="form-group col-lg-12">
 						<div class="input-group">
 							<span class="input-group-addon" id="basic-addon1">加班原因</span>
-							<input type="text" class="form-control" id="otforminput5" placeholder="请输入加班原因" value="{$reason}" aria-describedby="basic-addon1">
+							<input type="text" class="form-control" id="leaveforminput5" placeholder="请输入加班原因" value="{$reason}" aria-describedby="basic-addon1">
 						</div>
 					</div>
 				</div>
 				<div class="row">
-					<div class="form-group col-lg-4">
+					<div class="form-group col-lg-12">
 						<div class="input-group">
-							<span class="input-group-addon" id="basic-addon1">处理方式</span>
-							<input type="text" class="form-control" id="otforminput6" placeholder="请选择加班处理方式" value="{$dealwith}" aria-describedby="basic-addon1" readonly="readonly" >
+							<span class="input-group-addon" id="basic-addon1">请假类别</span>
+							<input type="text" class="form-control" id="leaveforminput6" placeholder="请选择加班处理方式" value="{$dealwith}" aria-describedby="basic-addon1" readonly="readonly" >
 						</div>
 					</div>
+				</div>
+				<div class="row">
 					<div class="form-group col-lg-4" style="margin-bottom:0px;padding-top:6px;">
-						<input class="otformredio"  type="radio" name="inlineRadioOptions" id="otformradio1"  value="调休"><span style="margin-left:10px;margin-top:5px">调休</span>
+						<input class="leaveformradio" type="radio" name="leaveformradio" id="leaveformradio1"  value="事假"><span style="margin-left:10px;margin-top:5px">事假</span>
 					</div>
 					<div class="form-group col-lg-4" style="margin-bottom:0px;padding-top:6px;">
-					<input class="otformredio" type="radio" name="inlineRadioOptions" id="otformradio2"  value="计加班费"><span style="margin-left:10px;margin-top:5px">计加班费</span>
+						<input class="leaveformradio" type="radio" name="leaveformradio" id="leaveformradio2"  value="病假"><span style="margin-left:10px;margin-top:5px">病假</span>
+					</div>
+					<div class="form-group col-lg-4" style="margin-bottom:0px;padding-top:6px;">
+						<input class="leaveformradio" type="radio" name="leaveformradio" id="leaveformradio3"  value="年假"><span style="margin-left:10px;margin-top:5px">年假</span>
+					</div>
+				</div>
+				<div class="row">
+					<div class="form-group col-lg-4" style="margin-bottom:0px;padding-top:6px;">
+						<input class="leaveformradio" type="radio" name="leaveformradio" id="leaveformradio4"  value="婚假"><span style="margin-left:10px;margin-top:5px">婚假</span>
+					</div>
+					<div class="form-group col-lg-4" style="margin-bottom:0px;padding-top:6px;">
+						<input class="leaveformradio" type="radio" name="leaveformradio" id="leaveformradio5"  value="产假"><span style="margin-left:10px;margin-top:5px">产假</span>
+					</div>		
+					<div class="form-group col-lg-4" style="margin-bottom:0px;padding-top:6px;">
+						<input class="leaveformradio" type="radio" name="leaveformradio" id="leaveformradio6"  value="陪产假"><span style="margin-left:10px;margin-top:5px">陪产假</span>
+					</div>
+				</div>
+				<div class="row">
+					<div class="form-group col-lg-4" style="margin-bottom:0px;padding-top:6px;">
+						<input class="leaveformradio" type="radio" name="leaveformradio" id="leaveformradio7"  value="丧假"><span style="margin-left:10px;margin-top:5px">丧假</span>
+					</div>
+					<div class="form-group col-lg-4" style="margin-bottom:0px;padding-top:6px;">
+						<input class="leaveformradio" type="radio" name="leaveformradio" id="leaveformradio8"  value="哺乳假"><span style="margin-left:10px;margin-top:5px">哺乳假</span>
+					</div>
+					<div class="form-group col-lg-4" style="margin-bottom:0px;padding-top:6px;">
+						<input class="leaveformradio" type="radio" name="leaveformradio" id="leaveformradio9"  value="工伤假"><span style="margin-left:10px;margin-top:5px">工伤假</span>
 					</div>
 				</div>
 				<!-- <div class="row"> -->
@@ -94,7 +120,7 @@
 
 <div class="panel panel-default">
 			<div class="panel-heading text-center"><h3>申请记录</h3></div>
-			<div class="panel-body" id="otpostformrecord">
+			<div class="panel-body">
 			<table class="table table-striped">
 			<tr><th>业务状态</th><th>业务类型</th><th>业务名称</th><th>申请人</th><th>递交时间</th><th>最近步骤变更时间</th><th>操作</th></tr>
 			{volist name="myworkrecordlist" id="value"}
@@ -133,13 +159,15 @@
     });
 </script>
 
+
+
 <!-- 包括iCheck插件 -->
 <link href="/static/css/square/grey.css" rel="stylesheet">
 <script type="text/javascript" src="/static/js/icheck.min.js" charset="UTF-8"></script>
 
 <script>
 $(document).ready(function(){
-  $('.otformredio').iCheck({
+  $('.leaveformradio').iCheck({
     checkboxClass: 'icheckbox_square-grey',
     radioClass: 'iradio_square-grey',
     increaseArea: '20%' // optional
@@ -151,8 +179,8 @@ $(document).ready(function(){
 
 <!-- 获取单选值 -->
 <script>
-$('.otformredio').on('ifChecked', function(event){
-  $('#otforminput6').val($('#'+this.id).val());
+$('.leaveformradio').on('ifChecked', function(event){
+  $('#leaveforminput6').val($('#'+this.id).val());
 });
 
 </script>
